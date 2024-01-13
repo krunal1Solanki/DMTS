@@ -5,10 +5,10 @@ import { DesktopOutlined, FileOutlined, PieChartOutlined, TeamOutlined, UserOutl
 import { useRouter } from 'next/navigation';
 import { Tabs, TabList, TabPanels, Tab, TabPanel, useColorModeValue, Image } from '@chakra-ui/react'
 const { Header, Content, Footer, Sider } = Layout;
-import Questionnaire from '../Components/Questionnaire'
-import ActiveSite from '../Components/ActiveSite';
-import SetRates from '../Components/SetRates';
-import QueryDisplay from '../Components/QueryDisplay';
+import Questionnaire from '../../Components/Questionnaire'
+import ActiveSite from '../../Components/ActiveSite';
+import SetRates from '../../Components/SetRates';
+import QueryDisplay from '../../Components/QueryDisplay';
 
 
 const Settings = () => {

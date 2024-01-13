@@ -5,7 +5,7 @@ import { GoogleMap, useJsApiLoader, Marker, InfoWindow } from '@react-google-map
 import axios from 'axios';
 import { Box, Select } from '@chakra-ui/react';
 import { CircularProgress, CircularProgressLabel } from '@chakra-ui/react'
-import Loader from "../Components/LOader"
+import Loader from "../../Components/LOader"
 
 const MapDisplay = () => {
 
