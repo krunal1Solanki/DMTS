@@ -3,7 +3,7 @@
 import { GoogleMap, useJsApiLoader, Marker, InfoWindow } from '@react-google-maps/api';
 import axios from 'axios';
 import { Box, Button, Select } from '@chakra-ui/react';
-import Loader from "./Components/LOader"
+import Loader from "../../public/Components/LOader"
 const MapDisplay = () => {
   
   const [map, setMap] = useState(null);

@@ -5,12 +5,12 @@ import { DesktopOutlined, FileOutlined, PieChartOutlined, TeamOutlined, UserOutl
 import { useRouter } from 'next/navigation';
 import { Tabs, TabList, TabPanels, Tab, TabPanel, useColorModeValue, Image } from '@chakra-ui/react'
 const { Header, Content, Footer, Sider } = Layout;
-import Questionnaire from '../Components/Questionnaire'
-import ActiveSite from '../Components/ActiveSite';
-import SetRates from '../Components/SetRates';
-import CreateGroups from '../Components/CreateGroups';
-import AssignGroups from '../Components/AssignGroups';
-import UserHistoryAndReports from '../Components/UserHistoryAndReports';
+import Questionnaire from '../../../public/Components/Questionnaire'
+import ActiveSite from '../../../public/Components/ActiveSite';
+import SetRates from '../../../public/Components/SetRates';
+import CreateGroups from '../../../public/Components/CreateGroups';
+import AssignGroups from '../../../public/Components/AssignGroups';
+import UserHistoryAndReports from '../../../public/Components/UserHistoryAndReports';
 
 const Settings = () => {
   const router = useRouter();
