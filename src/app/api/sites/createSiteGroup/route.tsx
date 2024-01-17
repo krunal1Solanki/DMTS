@@ -25,7 +25,7 @@ export async function POST (request : NextRequest) {
         return NextResponse.json({
           message: "Group has beed created successfully!"
         });
-    } catch (err : Error) {
+    } catch (err : any) {
         console.log("E NDD")
         console.log(err)
         return NextResponse.json({
