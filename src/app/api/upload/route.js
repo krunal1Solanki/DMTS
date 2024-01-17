@@ -6,10 +6,10 @@ import { NextRequest, NextResponse } from 'next/server'
 import { readFile } from "fs";
 connect();
 
-export async function POST(request: NextRequest) {
+export async function POST(request) {
   const data = await request.formData()
   console.log({data})
-  const file: File | null = data.get('file') as unknown as File
+  const file = data.get('file') 
 
   if (!file) {
     return NextResponse.json({ success: false })
@@ -29,7 +29,7 @@ export async function POST(request: NextRequest) {
   return NextResponse.json({ success: true })
 }
 
-export async function GET(request: NextRequest) {
+export async function GET(request) {
     const { fileName } = request.params;
   
     const filePath = join(__dirname, '../', fileName);
