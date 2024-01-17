@@ -1,4 +1,4 @@
-import { Card, CardHeader, CardBody, Heading, Button, Table, Tbody, Tr, Th, Td, Tooltip, Modal, ModalOverlay, ModalContent, ModalHeader, ModalCloseButton, ModalBody, ModalFooter, useDisclosure, Divider } from '@chakra-ui/react';
+import { Card, CardHeader, CardBody, Heading, Input, Button, Table, Tbody, Tr, Th, Td, Tooltip, Modal, ModalOverlay, ModalContent, ModalHeader, ModalCloseButton, ModalBody, ModalFooter, useDisclosure, Divider, Flex, Text } from '@chakra-ui/react';
 import React, { useState, useEffect } from 'react';
 import { Transfer, message, Popconfirm } from 'antd';
 
@@ -16,6 +16,7 @@ const CreateGroups = () => {
     const [groups, setGroups] = useState([]);
     const [sites, setSites] = useState([]);
     const toast = useToast();
+    const [groupName, setGroupName] = useState('');
     const { isOpen, onOpen, onClose } = useDisclosure();
     const [currentGroup, setCurrentGroup] = useState(null);
     const [creatgroupbuttonLOader, setCreateGroupButtonLOader] = useState(false);
@@ -49,12 +50,30 @@ const CreateGroups = () => {
     }, [targetKeys]);
 
     const handleCreateGroup = async () => {
+        if (groupName.length == 0) {
+            toast({
+                title: "Validation Error",
+                position: 'top-right',
+                description: 'Please enter group name',
+                status: 'warning'
+            })
+            return;
+        }
+        if (targetKeys.length == 0) {
+            toast({
+                title: "Validation Error",
+                position: 'top-right',
+                description: 'Please select sites for grouping',
+                status: 'warning'
+            })
+            return;
+
+        }
         setCreateGroupButtonLOader(true)
         const pumpNames = pumpData.filter((item) => targetKeys.includes(item.key)).map((item) => item.title);
 
         // Creating the groupName by concatenating the first two letters of pumpNames
         console.log('ininiddcd', targetKeys, pumpNames);
-        const groupName = pumpNames.map((name) => name.slice(0, 2)).join('');
 
         // Logging the groupName
         const siteArray = [];
@@ -76,10 +95,11 @@ const CreateGroups = () => {
         setTargetKeys([]);
         setSelectedKeys([]);
         setCreateGroupButtonLOader(false)
+        setGroupName('')
 
         toast({
-            description: 'Group created successfully',
-            status: 'success',
+            description: info.data.message,
+            status: info.data.message == 'Group Exists!' ? 'warning' : 'success',
             position: 'top-right',
             duration: 10000,
             isClosable: true,
@@ -165,6 +185,10 @@ const CreateGroups = () => {
                         <Heading mb={5} size="sm" textTransform="uppercase">
                             Create Group
                         </Heading>
+                        <Flex alignItems={'center'} justifyContent={'center'} mb={4}>
+
+                            <Text fontSize={'1.2em'} mr={3}>Group Name : </Text> <Input value={groupName} onChange={(e) => setGroupName(e.target.value)} w={'50%'} />
+                        </Flex>
                         <Transfer
                             dataSource={pumpData}
                             titles={['Available', 'Groupped']}

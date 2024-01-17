@@ -8,7 +8,13 @@ export async function POST (request : NextRequest) {
         const body = await request.json();
         const {groupName, sites} = body;
         console.log("THIS IS MY BODY", body)
+    
 
+        const existingGroup = await siteGroupModel.findOne({groupName});
+        console.log(existingGroup)
+        if(existingGroup) {
+            throw new Error('Group Exists!')
+        }
         console.log(typeof sites[0].siteId)
         const group = await siteGroupModel.create({
             groupName,
@@ -17,11 +23,13 @@ export async function POST (request : NextRequest) {
         })
 
         return NextResponse.json({
-          message: group
+          message: "Group has beed created successfully!"
         });
-    } catch (err : any) {
+    } catch (err : Error) {
+        console.log("E NDD")
+        console.log(err)
         return NextResponse.json({
-            error : err.message
+            message : err.message
         })
     }
 }

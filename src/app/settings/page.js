@@ -8,6 +8,7 @@ const { Header, Content, Footer, Sider } = Layout;
 import Questionnaire from '../../Components/Questionnaire'
 import ActiveSite from '../../Components/ActiveSite';
 import SetRates from '../../Components/SetRates';
+import Office from '../../Components/Office';
 import QueryDisplay from '../../Components/QueryDisplay';
 
 
@@ -29,6 +30,7 @@ const Settings = () => {
             <Tab _selected={{ color: 'white', bg: 'teal.500' }} onClick={()=> setTab(2)}>Rates</Tab>
             <Tab _selected={{ color: 'white', bg: 'teal.500' }} onClick={()=> setTab(3)}>Active Site</Tab>
             <Tab _selected={{ color: 'white', bg: 'teal.500' }} onClick={()=> setTab(4)}>Query</Tab>
+            <Tab _selected={{ color: 'white', bg: 'teal.500' }} onClick={()=> setTab(5)}>Office</Tab>
           </TabList>
           <TabPanels>
             <TabPanel>
@@ -42,6 +44,9 @@ const Settings = () => {
             </TabPanel>
             <TabPanel>
                 {tab == 4 && <QueryDisplay/>}
+            </TabPanel>
+            <TabPanel>
+                {tab == 5 && <Office/>}
             </TabPanel>
           </TabPanels>
         </Tabs>
