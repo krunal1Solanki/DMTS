@@ -23,4 +23,4 @@ const MainMenu = () => {
   );
 };
 
-export default MainMenu;
+export default MainMenu = 'force-dynamic';

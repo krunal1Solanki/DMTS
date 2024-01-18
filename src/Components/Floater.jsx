@@ -92,4 +92,4 @@ const Floater = () => {
   );
 };
 
-export default Floater;
+export default Floater = 'force-dynamic';

@@ -1,3 +1,4 @@
+"use client"
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import {
@@ -130,4 +131,4 @@ const ActiveSite = () => {
     );
 };
 
-export default ActiveSite;
+export default ActiveSite = 'force-dynamic';

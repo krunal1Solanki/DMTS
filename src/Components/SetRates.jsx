@@ -1,3 +1,4 @@
+"use client"
 import React from 'react'
 import {
     Slider,
@@ -73,4 +74,4 @@ const SetRates = () => {
     )
 }
 
-export default SetRates
+export default SetRates = 'force-dynamic'

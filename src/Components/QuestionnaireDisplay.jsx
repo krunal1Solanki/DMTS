@@ -1,3 +1,4 @@
+"use client"
 import axios from 'axios';
 import { useEffect, useState } from 'react';
 import {
@@ -166,4 +167,4 @@ const QuestionnaireDisplay = () => {
   );
 };
 
-export default QuestionnaireDisplay;
+export default QuestionnaireDisplay = 'force-dynamic';

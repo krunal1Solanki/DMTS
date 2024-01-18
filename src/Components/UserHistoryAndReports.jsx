@@ -105,4 +105,4 @@ const UserHistoryAndReports = () => {
   );
 };
 
-export default UserHistoryAndReports;
+export default UserHistoryAndReports = 'force-dynamic';

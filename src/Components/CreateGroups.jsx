@@ -1,3 +1,4 @@
+"use client"
 import { Card, CardHeader, CardBody, Heading, Input, Button, Table, Tbody, Tr, Th, Td, Tooltip, Modal, ModalOverlay, ModalContent, ModalHeader, ModalCloseButton, ModalBody, ModalFooter, useDisclosure, Divider, Flex, Text } from '@chakra-ui/react';
 import React, { useState, useEffect } from 'react';
 import { Transfer, message, Popconfirm } from 'antd';
@@ -282,4 +283,4 @@ const CreateGroups = () => {
     );
 };
 
-export default CreateGroups;
+export default CreateGroups = 'force-dynamic';

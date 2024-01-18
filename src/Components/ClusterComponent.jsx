@@ -1,3 +1,4 @@
+"use client"
 import React from "react";
 import mapLocationMarker from "../Images/mapmarker.png";
 import mapMarker from "../Images/member.svg";
@@ -115,4 +116,4 @@ ClusterComponet.propTypes = {
   onInfoItemClick:PropTypes.func,
   mapMarker:PropTypes.any,
 };
-export default ClusterComponet;
+export default ClusterComponet = 'force-dynamic';
