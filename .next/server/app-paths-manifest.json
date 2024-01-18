@@ -1,5 +1,6 @@
 {
-  "/page": "app/page.js",
-  "/users/page": "app/users/page.js",
-  "/settings/page": "app/settings/page.js"
+  "/api/setting/getOffice/route": "app/api/setting/getOffice/route.js",
+  "/api/setting/getQuery/route": "app/api/setting/getQuery/route.js",
+  "/api/setting/deleteOffice/route": "app/api/setting/deleteOffice/route.js",
+  "/api/sites/getAllSites/route": "app/api/sites/getAllSites/route.js"
 }
