@@ -22,4 +22,4 @@ const Loader = () => {
   );
 };
 
-export default Loader = 'force-dynamic';
+export default Loader;
