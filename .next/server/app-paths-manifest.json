@@ -1,7 +1,5 @@
 {
+  "/page": "app/page.js",
   "/users/page": "app/users/page.js",
-  "/settings/page": "app/settings/page.js",
-  "/scheduler/page": "app/scheduler/page.js",
-  "/api/sites/createSiteGroup/route": "app/api/sites/createSiteGroup/route.js",
-  "/api/sites/getSiteGroups/route": "app/api/sites/getSiteGroups/route.js"
+  "/settings/page": "app/settings/page.js"
 }
