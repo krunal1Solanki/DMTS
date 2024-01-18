@@ -131,4 +131,4 @@ const ActiveSite = () => {
     );
 };
 
-export default ActiveSite = 'force-dynamic';
+export default ActiveSite ;

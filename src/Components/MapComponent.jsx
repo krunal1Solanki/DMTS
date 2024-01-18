@@ -96,4 +96,4 @@ MapComponent.defaultProps = {
   mapMarker: null,
 };
 
-export default MapComponent = 'force-dynamic';
+export default MapComponent ;

@@ -283,4 +283,4 @@ const CreateGroups = () => {
     );
 };
 
-export default CreateGroups = 'force-dynamic';
+export default CreateGroups ;

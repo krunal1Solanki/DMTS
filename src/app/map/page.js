@@ -226,4 +226,4 @@ const MapDisplay = () => {
   );
 };
 
-export default MapDisplay = 'force-dynamic'; 
+export default MapDisplay ; 

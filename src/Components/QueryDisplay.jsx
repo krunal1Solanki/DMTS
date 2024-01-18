@@ -197,4 +197,4 @@ const QueryDisplay = () => {
   );
 };
 
-export default QueryDisplay = 'force-dynamic';
+export default QueryDisplay ;

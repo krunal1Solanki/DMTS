@@ -12,4 +12,4 @@ const CustomerMarker = () => {
   )
 }
 
-export default CustomerMarker = 'force-dynamic'
+export default CustomerMarker 

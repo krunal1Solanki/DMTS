@@ -53,4 +53,4 @@ const Settings = () => {
   )
 }
 
-export default Settings = 'force-dynamic'
+export default Settings 

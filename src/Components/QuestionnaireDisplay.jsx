@@ -167,4 +167,4 @@ const QuestionnaireDisplay = () => {
   );
 };
 
-export default QuestionnaireDisplay = 'force-dynamic';
+export default QuestionnaireDisplay ;

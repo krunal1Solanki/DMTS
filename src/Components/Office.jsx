@@ -472,4 +472,4 @@ const allIndianStates = [
     "Puducherry",
 ];
 
-export default Office = 'force-dynamic';
+export default Office ;

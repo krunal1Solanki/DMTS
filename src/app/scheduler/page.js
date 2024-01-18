@@ -44,4 +44,4 @@ const Scheduler = () => {
   );
 }
 
-export default Scheduler = 'force-dynamic'
+export default Scheduler 

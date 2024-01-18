@@ -259,4 +259,4 @@ const AssignGroups = () => {
   );
 };
 
-export default AssignGroups = 'force-dynamic';
+export default AssignGroups ;

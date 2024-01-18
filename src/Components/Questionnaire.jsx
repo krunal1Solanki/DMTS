@@ -257,4 +257,4 @@ const Questionnaire = () => {
   );
 };
 
-export default Questionnaire = 'force-dynamic';
+export default Questionnaire ;

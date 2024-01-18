@@ -116,4 +116,4 @@ ClusterComponet.propTypes = {
   onInfoItemClick:PropTypes.func,
   mapMarker:PropTypes.any,
 };
-export default ClusterComponet = 'force-dynamic';
+export default ClusterComponet ;

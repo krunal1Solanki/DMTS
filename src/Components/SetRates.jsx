@@ -74,4 +74,4 @@ const SetRates = () => {
     )
 }
 
-export default SetRates = 'force-dynamic'
+export default SetRates
