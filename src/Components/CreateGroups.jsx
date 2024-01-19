@@ -283,4 +283,4 @@ const CreateGroups = () => {
     );
 };
 
-export default CreateGroups ;
+export default CreateGroups;

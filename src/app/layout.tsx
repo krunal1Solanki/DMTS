@@ -5,7 +5,8 @@ import './globals.css'
 import Header from './header/page'
 import { Providers } from './provider'
 import Floater from '../Components/Floater'
-
+import {ReduxProvider} from '../redux/provider'
+import { useRouter } from 'next/navigation'
 const inter = Inter({ subsets: ['latin'] })
 
 export const metadata: Metadata = {
@@ -21,13 +22,14 @@ export default function RootLayout({
   return (
 
 <html lang="en">
-
       <body className={inter.className}>
+        <ReduxProvider>
         <Providers>
         <Header/>
         <Floater/>
         {children}
         </Providers>
+        </ReduxProvider>
       </body>
     </html>
   )

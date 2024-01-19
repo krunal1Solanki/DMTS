@@ -4,6 +4,8 @@ import { GoogleMap, useJsApiLoader, Marker, InfoWindow } from '@react-google-map
 import axios from 'axios';
 import { Box, Button, Select } from '@chakra-ui/react';
 import Loader from "../Components/LOader"
+import { useRouter } from 'next/navigation';
+
 const MapDisplay = () => {
   
   const [map, setMap] = useState(null);
@@ -18,17 +20,14 @@ const MapDisplay = () => {
   const [initialZoom, setZoom] = useState(0)
   const [resetMap, setResetMap] = useState(false);
   const [show, setShow] = useState(true);
+  const router = useRouter();
 
-// latitude
-// "27.815231"
-// longitude
-// "81.721745"
-  const newCord = [{lat : '29', lng : '83'}]
   useEffect(() => {
     if (resetMap) {
       setResetMap(false);
     }
   }, [resetMap]);
+
  
   useEffect(() => {
     setShow(false);

@@ -1,13 +1,30 @@
-"use client"
-import React from 'react';
-import { FaWater, FaCalendarAlt, FaUsers, FaCog } from 'react-icons/fa';
-import { Box, Flex, Heading, Icon, Spacer } from '@chakra-ui/react';
+"use client";
+import React, { useEffect, useState } from 'react';
+import { FaWater, FaCalendarAlt, FaUsers, FaCog, FaPowerOff } from 'react-icons/fa';
+import { Box, Flex, Heading, Icon, Spacer, Button } from '@chakra-ui/react';
 import { useRouter } from 'next/navigation';
-import dmtsLogo from '../Images/dmtsLogo.png'
-import Image from 'next/image';
+import axios from 'axios';
+import { useDispatch, useSelector } from 'react-redux';
+import { logOut } from '@/redux/features/auth-slice';
 
 const Header = () => {
   const router = useRouter();
+  const loggedIn = useSelector((store) => store.authReducer.value.isAuth);
+
+  const dispatch = useDispatch();
+
+  const handleLogout = async () => {
+    try {
+      // Call the logout API endpoint
+      const response = await axios.get('/api/user/logout');
+      dispatch(logOut())
+
+      // Successful logout, update the authentication status and redirect to the login page
+      router.push('/login');
+    } catch (error) {
+      console.error('Error during logout:', error);
+    }
+  };
 
   const headerStyles = {
     backgroundColor: 'teal.1200',
@@ -15,7 +32,6 @@ const Header = () => {
     height: '53px',
     borderBottom: '2px solid #4A5568',
     boxShadow: '0px 2px 4px rgba(1, 2, 2, 5)',
-    // position: 'fixed',
     top: 0,
     width: '100%',
     zIndex: 1000,
@@ -41,6 +57,8 @@ const Header = () => {
   const menuItemStyles = {
     cursor: 'pointer',
     fontSize: '1rem',
+    display: 'flex',
+    alignItems: 'center',
     fontWeight: '500',
     transition: 'color 0.3s',
     _hover: { color: '#63B3ED' },
@@ -52,8 +70,8 @@ const Header = () => {
   };
 
   return (
-    <Flex {...headerStyles} backgroundColor={'gray.50'} borderTopRadius={'10px'} w={'100%'} height={'65px'} margin={'10px auto'} borderBottomRadius={'10px'}>
-      <Flex align="center" {...menuStyles} padding={'5px'}>
+    <Flex {...headerStyles}>
+      <Flex align="center" {...menuStyles}>
         <Icon color={'teal'} as={FaWater} {...iconStyles} />
         <Heading
           {...logoStyles}
@@ -63,11 +81,7 @@ const Header = () => {
           <span style={{ color: 'teal' }}>Aqualogix</span>{' '}
           <span style={{ color: 'teal' }}>DMTS</span>
         </Heading>
-
         <Spacer />
-        {/* <Box h={'100%'} boxSize='30%' mb={10} >
-          <Image src={dmtsLogo} />
-        </Box> */}
       </Flex>
       <Spacer />
       <Flex align="center" {...menuStyles} color={'teal'}>
@@ -83,6 +97,17 @@ const Header = () => {
           <Icon as={FaCog} {...iconStyles} />
           Settings
         </Box>
+        <Box {...menuItemStyles}>
+            <Button
+              onClick={handleLogout}
+              colorScheme="teal"
+              variant="outline"
+              size="sm"
+              leftIcon={<FaPowerOff />}
+            >
+              Logout
+            </Button>
+          </Box>
       </Flex>
     </Flex>
   );
