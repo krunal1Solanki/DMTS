@@ -4,13 +4,11 @@ import { FaWater, FaCalendarAlt, FaUsers, FaCog, FaPowerOff } from 'react-icons/
 import { Box, Flex, Heading, Icon, Spacer, Button } from '@chakra-ui/react';
 import { useRouter } from 'next/navigation';
 import axios from 'axios';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { logOut } from '@/redux/features/auth-slice';
 
 const Header = () => {
   const router = useRouter();
-  const loggedIn = useSelector((store) => store.authReducer.value.isAuth);
-
   const dispatch = useDispatch();
 
   const handleLogout = async () => {
@@ -97,17 +95,6 @@ const Header = () => {
           <Icon as={FaCog} {...iconStyles} />
           Settings
         </Box>
-        <Box {...menuItemStyles}>
-            <Button
-              onClick={handleLogout}
-              colorScheme="teal"
-              variant="outline"
-              size="sm"
-              leftIcon={<FaPowerOff />}
-            >
-              Logout
-            </Button>
-          </Box>
       </Flex>
     </Flex>
   );

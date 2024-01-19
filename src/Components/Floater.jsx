@@ -1,17 +1,19 @@
 "use client"
 import React, { useState } from 'react';
 import { FloatButton } from 'antd';
-import { CustomerServiceOutlined, QuestionCircleOutlined } from '@ant-design/icons';
+import { CustomerServiceOutlined, LogoutOutlined, QuestionCircleOutlined } from '@ant-design/icons';
 import { Box, useToast } from '@chakra-ui/react';
 import { Button, Modal, ModalOverlay, ModalContent, ModalHeader, ModalBody, ModalCloseButton, VStack, Select, Textarea } from '@chakra-ui/react';
 import { QuestionIcon, CheckCircleIcon, WarningIcon } from '@chakra-ui/icons';
 import axios from 'axios';
+import { useRouter } from 'next/navigation';
 
 const Floater = () => {
   const toast = useToast();
   const [isOpen, setIsOpen] = useState(false);
   const [queryType, setQueryType] = useState('');
   const [queryDescription, setQueryDescription] = useState('');
+  const router = useRouter();
 
   const handleOpenModal = () => setIsOpen(true);
   const handleCloseModal = () => {
@@ -45,12 +47,29 @@ const Floater = () => {
         status: 'error',
         render: ({ onClose }) => (
           <Box onClick={onClose} p={3} color="white" bg="red.500" borderRadius="md" cursor="pointer">
-            <WarningIcon mr={2} /> Error submitting query.
+            <WarningIcon mr={2} /> Error submitting query: {error.message}
           </Box>
         ),
       });
     }
     handleCloseModal();
+  };
+
+  const handleLogout = async () => {
+    try {
+      await axios.get('/api/user/logout');
+      toast({
+        title: 'Logged Out',
+        description: 'You have been successfully logged out.',
+        duration: 2000,
+        position: 'top-right',
+        status: 'success',
+      });
+      router.push('/login')
+    } catch (error) {
+      // Handle logout error if needed
+      console.error('Logout Error:', error);
+    }
   };
 
   return (
@@ -65,6 +84,7 @@ const Floater = () => {
         icon={<CustomerServiceOutlined />}
       >
         <FloatButton onClick={handleOpenModal} icon={<QuestionCircleOutlined />} />
+        <FloatButton onClick={handleLogout} icon={<LogoutOutlined />} /> {/* Add a logout button */}
       </FloatButton.Group>
       <Modal isOpen={isOpen} onClose={handleCloseModal}>
         <ModalOverlay />

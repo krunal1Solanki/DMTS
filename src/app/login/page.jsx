@@ -13,7 +13,7 @@ import { FaUser, FaLock } from 'react-icons/fa';
 import { useRouter } from 'next/navigation';
 import axios from 'axios';
 import { enc, AES } from 'crypto-js';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { logIn } from '@/redux/features/auth-slice';
 
 const LoginPage = () => {
@@ -22,7 +22,6 @@ const LoginPage = () => {
     const dispatch = useDispatch();
     const [OperatorName, setUsername] = useState('');
     const [password, setPassword] = useState('');
-
     const handleLogin = async () => {
 
         try {
