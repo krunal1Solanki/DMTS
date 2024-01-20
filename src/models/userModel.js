@@ -5,9 +5,16 @@ const schema = new Schema({
     OperatorName: {
         type: String
     },
+    pmscUserData : Object,
+    isPMSCUser: Boolean,
+    employeeId : {
+        type: Number,
+        unique: true
+    },
     userType: {
         type: Number
     },
+
     Designation: {
         type: String,
         default: 2, // 1 - Admin, 2 - User
@@ -44,24 +51,6 @@ const schema = new Schema({
         // required: true
     },
     PasswordExpiryOn: {
-        type: Date,
-        default: new Date().toISOString()
-    },
-    Permission: {
-        type: [
-            {
-                //id: String,
-                moduleName: String,
-                create: Boolean,
-                edit: Boolean,
-                view: Boolean,
-                delete: Boolean,
-                listing: Boolean,            
-            }
-        ],
-        // required: true
-    },
-    ActivateDate: {
         type: Date,
         default: new Date().toISOString()
     },

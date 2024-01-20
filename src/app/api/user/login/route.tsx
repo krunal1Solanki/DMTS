@@ -9,7 +9,7 @@ connect();
 export async function POST(request: NextRequest,) {
     try {
         const { OperatorName, password } = await request.json();
-        const user = await userModel.findOne({ OperatorName });
+        const user = await userModel.findOne({ employeeId : OperatorName });
         console.log({ user });
 
         if (!user) return NextResponse.json({
