@@ -9,7 +9,7 @@ connect();
 export async function POST(request: NextRequest,) {
     try {
         const { OperatorName, password } = await request.json();
-        const user = await userModel.findOne({ employeeId : OperatorName });
+        const user = await userModel.findOne({"pmscUserData.employeeId" : OperatorName });
         console.log({ user });
 
         if (!user) return NextResponse.json({
@@ -22,14 +22,15 @@ export async function POST(request: NextRequest,) {
             message: "Please enter correct password!"
         });
 
-        // Create a JWT token
-        const token = jwt.sign({ user }, 'PIKACHU', { expiresIn: '1h' });
+        const newUser = user.user;
+        
+        const token = jwt.sign({ newUser }, 'PIKACHU', { expiresIn: '1h' });
 
         const response = NextResponse.json({
             message: "User found!",
             user
         });
-
+        
         response.cookies.set("token", token, {httpOnly : true});
 
         return response;

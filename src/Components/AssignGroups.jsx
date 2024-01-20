@@ -241,7 +241,6 @@ const AssignGroups = () => {
             Assign Groups
           </Heading>
         </CardHeader>
-        {Loaders ? (<Loader />) : (
         <CardBody>
           <Table
             dataSource={users}
@@ -253,7 +252,6 @@ const AssignGroups = () => {
             }}
           />
         </CardBody>
-        )}
       </Card>
     </>
   );

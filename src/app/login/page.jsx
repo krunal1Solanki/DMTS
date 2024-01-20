@@ -28,8 +28,8 @@ const LoginPage = () => {
             const response = await axios.post('/api/user/login', { OperatorName, password });
             
             if (response.data.message == 'User found!') {
-                dispatch(logIn(response.data.user))
                 router.push('/')
+                dispatch(logIn(response.data.user))
                 toast({
                     title: 'Login Successful',
                     status: 'success',
