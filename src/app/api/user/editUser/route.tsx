@@ -6,8 +6,8 @@ connect();
 export async function POST(request: NextRequest,) {
     try {
      const body = await request.json();
-
-     await userModel.findOneAndUpdate({_id : body._id}, {body});
+     console.log(body._id);
+     const w = await userModel.findOneAndUpdate({_id : body._id}, {...body});
 
      return NextResponse.json({
         message : "User has been edited successfully"
