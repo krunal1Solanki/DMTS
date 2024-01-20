@@ -1,7 +1,4 @@
 {
-  "/page": "app/page.js",
-  "/users/page": "app/users/page.js",
-  "/favicon.ico/route": "app/favicon.ico/route.js",
-  "/api/project/getAllProjects/route": "app/api/project/getAllProjects/route.js",
-  "/api/sites/getSitesByProjectId/route": "app/api/sites/getSitesByProjectId/route.js"
+  "/login/page": "app/login/page.js",
+  "/favicon.ico/route": "app/favicon.ico/route.js"
 }
