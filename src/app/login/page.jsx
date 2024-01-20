@@ -77,7 +77,7 @@ const LoginPage = () => {
                     />
                     <Input
                         type="text"
-                        placeholder="OperatorName"
+                        placeholder="Empoyee Id"
                         value={OperatorName}
                         onChange={(e) => setUsername(e.target.value)}
                         borderRadius="4px"
