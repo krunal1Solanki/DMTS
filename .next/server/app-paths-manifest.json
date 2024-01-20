@@ -1,10 +1,4 @@
 {
-  "/page": "app/page.js",
-  "/users/page": "app/users/page.js",
   "/login/page": "app/login/page.js",
-  "/settings/page": "app/settings/page.js",
-  "/api/user/logout/route": "app/api/user/logout/route.js",
-  "/api/user/login/route": "app/api/user/login/route.js",
-  "/api/project/getAllProjects/route": "app/api/project/getAllProjects/route.js",
-  "/api/sites/getSitesByProjectId/route": "app/api/sites/getSitesByProjectId/route.js"
+  "/page": "app/page.js"
 }
