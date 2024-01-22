@@ -3,26 +3,9 @@ import React, { useEffect, useState } from 'react';
 import { FaWater, FaCalendarAlt, FaUsers, FaCog, FaPowerOff } from 'react-icons/fa';
 import { Box, Flex, Heading, Icon, Spacer, Button } from '@chakra-ui/react';
 import { useRouter } from 'next/navigation';
-import axios from 'axios';
-import { useDispatch } from 'react-redux';
-import { logOut } from '@/redux/features/auth-slice';
 
 const Header = () => {
   const router = useRouter();
-  const dispatch = useDispatch();
-
-  const handleLogout = async () => {
-    try {
-      // Call the logout API endpoint
-      const response = await axios.get('/api/user/logout');
-      dispatch(logOut())
-
-      // Successful logout, update the authentication status and redirect to the login page
-      router.push('/login');
-    } catch (error) {
-      console.error('Error during logout:', error);
-    }
-  };
 
   const headerStyles = {
     backgroundColor: 'teal.1200',
@@ -73,7 +56,7 @@ const Header = () => {
         <Icon color={'teal'} as={FaWater} {...iconStyles} />
         <Heading
           {...logoStyles}
-          onClick={() => router.push('/map')}
+          onClick={() => router.push('/')}
           bgClip="text"
         >
           <span style={{ color: 'teal' }}>Aqualogix</span>{' '}

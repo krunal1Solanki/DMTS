@@ -15,6 +15,10 @@ const schema = new Schema({
     creationDate: {
         type: Date,
         default: Date.now // Use a function to get the current date and time
+    },
+    isEmergency : {
+        type : Boolean,
+        default : false
     }
 }, {
     collection: 'siteGroupModel'

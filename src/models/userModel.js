@@ -22,6 +22,7 @@ const schema = new Schema({
     assignedGroups : {
         type : Array,
     },
+    emergencyGroup : Object,
     EmploymentType: {
         type: String,
         //enum: ["Admin", "Desire", "Contractor", "Gov User", "Operator"],

@@ -7,11 +7,12 @@ import { DeleteFilled } from '@ant-design/icons';
 import axios from 'axios';
 import { Table, Space } from 'antd';
 import Loader from "./LOader"
+import { useSelector } from 'react-redux';
 const { Option } = Select;
 
 const AssignGroups = () => {
   const toast = useToast();
-  const [users, setUsers] = useState([]);
+  const [users, setUsers] = useState(useSelector((state)=> state.userReducer.value.users));
   const [groups, setGroups] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [selectedUser, setSelectedUser] = useState(null);
@@ -36,25 +37,7 @@ const AssignGroups = () => {
     }
   };
 
-  useEffect(() => {
-    getUsers();
-  }, [currentPage]);
 
-  const getUsers = async () => {
-    setLoaders(true)
-    try {
-
-      const response = await axios.get('/api/user/getUserWithGroups', {
-        params: {
-          page: currentPage,
-        },
-      });
-      setUsers(response.data.message);
-      setLoaders(false)
-    } catch (error) {
-      console.log(error.message);
-    }
-  };
 
   const handleAssignSite = (user) => {
     setSelectedUser(user);

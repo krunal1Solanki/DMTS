@@ -1,42 +1,72 @@
 "use client"
-import { Card, CardHeader, CardBody, Heading, Input, Button, Table, Tbody, Tr, Th, Td, Tooltip, Modal, ModalOverlay, ModalContent, ModalHeader, ModalCloseButton, ModalBody, ModalFooter, useDisclosure, Divider, Flex, Text } from '@chakra-ui/react';
 import React, { useState, useEffect } from 'react';
 import { Transfer, message, Popconfirm } from 'antd';
-
 import axios from 'axios';
 import { useToast } from '@chakra-ui/react';
-import Loader from "./LOader"
-
-
+import { useSelector } from 'react-redux';
+import {
+    Card,
+    CardHeader,
+    CardBody,
+    Heading,
+    Input,
+    Button,
+    Table,
+    Tbody,
+    Tr,
+    Th,
+    Td,
+    Tooltip,
+    Modal,
+    ModalOverlay,
+    ModalContent,
+    ModalHeader,
+    ModalCloseButton,
+    ModalBody,
+    ModalFooter,
+    useDisclosure,
+    Divider,
+    Flex,
+    Text,
+    Select, // Added Select component
+} from '@chakra-ui/react';
+import Loader from "./LOader";
 
 const CreateGroups = () => {
-
-
     const [targetKeys, setTargetKeys] = useState([]);
     const [selectedKeys, setSelectedKeys] = useState([]);
     const [groups, setGroups] = useState([]);
+    const [users, setUsers] = useState(useSelector((state) => state.userReducer.value.users) || []);
     const [sites, setSites] = useState([]);
     const toast = useToast();
+    const [emergency, setEmergency] = useState(false);
     const [groupName, setGroupName] = useState('');
     const { isOpen, onOpen, onClose } = useDisclosure();
     const [currentGroup, setCurrentGroup] = useState(null);
     const [creatgroupbuttonLOader, setCreateGroupButtonLOader] = useState(false);
     const [getSitesLOader, setGetSitesLOader] = useState(false);
+    const [selectedUser, setSelectedUser] = useState(null); // New state variable for selected user
+
     useEffect(() => {
         getSites();
         getGroups();
     }, []);
 
+    useEffect(() => {
+        console.log(selectedUser)
+    }, [selectedUser])
+
     const confirm = (e) => {
         console.log(e);
         message.success('Click on Yes');
     };
+
     const cancel = (e) => {
         console.log(e);
         message.error('Click on No');
     };
-    const getGroups = async () => {
 
+    const getGroups = async () => {
         try {
             const groups = await axios.get('/api/sites/getSiteGroups');
             setGroups(groups.data.message);
@@ -51,63 +81,115 @@ const CreateGroups = () => {
     }, [targetKeys]);
 
     const handleCreateGroup = async () => {
-        if (groupName.length == 0) {
+        if (groupName.length === 0) {
             toast({
                 title: "Validation Error",
                 position: 'top-right',
                 description: 'Please enter group name',
-                status: 'warning'
+                status: 'warning',
+                duration: '3000'
             })
             return;
         }
-        if (targetKeys.length == 0) {
+
+        if (targetKeys.length === 0) {
             toast({
                 title: "Validation Error",
                 position: 'top-right',
                 description: 'Please select sites for grouping',
-                status: 'warning'
+                status: 'warning',
+                duration : '3000'
             })
             return;
-
         }
+
         setCreateGroupButtonLOader(true)
+
         const pumpNames = pumpData.filter((item) => targetKeys.includes(item.key)).map((item) => item.title);
 
-        // Creating the groupName by concatenating the first two letters of pumpNames
-        console.log('ininiddcd', targetKeys, pumpNames);
+        const siteArray = pumpNames.map((pumpName, index) => ({
+            siteId: targetKeys[index],
+            pumpName: pumpName
+        }));
 
-        // Logging the groupName
-        const siteArray = [];
-        for (let i = 0; i < pumpNames.length; i++) {
-            siteArray.push({
-                siteId: targetKeys[i],
-                pumpName: pumpNames[i]
-            })
+        try {
+
+            if (emergency && !selectedUser) {
+                toast({
+                    description: 'Please select user!',
+                    status: 'warning',
+                    position: 'top-right',
+                    duration: 3000,
+                    isClosable: true,
+                });
+                setCreateGroupButtonLOader(false)
+                return;
+            }
+
+
+            if (emergency) {
+                const body = {
+                    user: selectedUser,
+                    group: {
+                        groupName,
+                        sites: siteArray
+                    }
+                };
+                try {
+                    const info = await axios.post('/api/sites/assignEmergencyRoute', body);
+                    toast({
+                        description: 'Emergency route assigned successfully!',
+                        status: 'success',
+                        position: 'top-right',
+                        duration: 3000,
+                        isClosable: true,
+                    });
+                } catch (error) {
+                    toast({
+                        description: error.message,
+                        status: 'warning',
+                        position: 'top-right',
+                        duration: 3000,
+                        isClosable: true,
+                    });
+                } finally {
+                    setTargetKeys([]);
+                    setSelectedKeys([]);
+                    setGroupName('');
+                    setSelectedUser(undefined);
+                    setCreateGroupButtonLOader(false)
+                    return;
+                }
+            }
+            const info = await axios.post('/api/sites/createSiteGroup', {
+                groupName,
+                sites: siteArray,
+            });
+
+            setTargetKeys([]);
+            setSelectedKeys([]);
+            setCreateGroupButtonLOader(false);
+            setGroupName('');
+
+            toast({
+                description: info.data.message,
+                status: info.data.message === 'Group Exists!' ? 'warning' : 'success',
+                position: 'top-right',
+                duration: 10000,
+                isClosable: true,
+            });
+
+            getGroups();
+        } catch (error) {
+            console.error('Error creating group:', error);
+            toast({
+                description: 'Error creating group',
+                status: 'error',
+                position: 'top-right',
+                duration: 10000,
+                isClosable: true,
+            });
         }
-
-        console.log('FINAALLLL', siteArray)
-
-        const info = await axios.post('/api/sites/createSiteGroup', {
-            groupName,
-            sites: siteArray,
-        });
-
-        // Resetting targetKeys and selectedKeys
-        setTargetKeys([]);
-        setSelectedKeys([]);
-        setCreateGroupButtonLOader(false)
-        setGroupName('')
-
-        toast({
-            description: info.data.message,
-            status: info.data.message == 'Group Exists!' ? 'warning' : 'success',
-            position: 'top-right',
-            duration: 10000,
-            isClosable: true,
-        });
-
-        // Refresh groups after creating a new one
-        getGroups();
     };
 
     const getSites = async () => {
@@ -129,10 +211,8 @@ const CreateGroups = () => {
 
     const handleDeleteGroup = async (groupId) => {
         try {
-            // Call the API to delete the group
             await axios.post(`/api/sites/deleteGroup`, { groupId });
 
-            // Show a toast indicating successful deletion
             toast({
                 description: 'Group deleted successfully',
                 status: 'success',
@@ -141,11 +221,10 @@ const CreateGroups = () => {
                 isClosable: true,
             });
 
-            // Refresh groups after deletion
             getGroups();
         } catch (error) {
             console.error('Error deleting group:', error);
-            // Show a toast indicating an error
+
             toast({
                 description: 'Error deleting group',
                 status: 'error',
@@ -163,7 +242,12 @@ const CreateGroups = () => {
     const onChange = (nextTargetKeys, direction, moveKeys) => {
         setTargetKeys(nextTargetKeys);
     };
-
+    const handleUserChange = (event) => {
+        const userId = event.target.value; // Assuming the value is the user ID
+        const selectedUserObject = users.find(user => user._id === userId);
+        console.log(selectedUserObject)
+        setSelectedUser(selectedUserObject);
+    };
     const onSelectChange = (sourceSelectedKeys, targetSelectedKeys) => {
         setSelectedKeys([...sourceSelectedKeys, ...targetSelectedKeys]);
     };
@@ -175,21 +259,42 @@ const CreateGroups = () => {
 
     return (
         <Card>
-            <CardHeader bg="teal.500" borderBottomWidth="1px" borderColor="teal.600" color="white" textAlign="center" padding="4">
+            <CardHeader borderBottomWidth="1px" bg={!emergency ? "teal.600" : "red.500"} color="white" textAlign="center" padding="4">
                 <Heading size="md" textTransform="uppercase">
-                    Create Groups
+                   {!emergency ? 'Create Groups' : 'Create Group (Emergency Mode)'}
                 </Heading>
             </CardHeader>
             <CardBody>
                 {getSitesLOader ? (<Loader />) : (
                     <>
-                        <Heading mb={5} size="sm" textTransform="uppercase">
-                            Create Group
-                        </Heading>
-                        <Flex alignItems={'center'} justifyContent={'center'} mb={4}>
+                        <Flex justifyContent={'space-between'}>
+                            <Heading mb={5} size="sm" textTransform="uppercase">
+                                Create Group
+                            </Heading>
 
-                            <Text fontSize={'1.2em'} mr={3}>Group Name : </Text> <Input value={groupName} onChange={(e) => setGroupName(e.target.value)} w={'50%'} />
+                            <Flex alignItems={'center'} >
+                                <Text fontSize={'1.2em'} whiteSpace='nowrap' mr={3}>Group Name:</Text> <Input value={groupName} onChange={(e) => setGroupName(e.target.value)} w={'50%'} />
+                                {emergency && <><Text fontSize={'1.2em'} ml={4} whiteSpace={'nowrap'} mr={3}>Select User:</Text>
+                                    <Select
+                                        placeholder="Select user"
+                                        value={selectedUser ? selectedUser.value : undefined}
+                                        onChange={handleUserChange}
+                                    >
+                                        {users.map((user) => (
+                                            <option key={user._id} value={user._id}>
+                                                {user.OperatorName}
+                                            </option>
+                                        ))}
+                                    </Select>
+                                </>}
+                            </Flex>
+
+                            <Heading mb={5} size="sm" backgroundColor={emergency ? 'red.500' : 'teal.300'} p='2' onClick={() => setEmergency(!emergency)} borderRadius={'20%'} textTransform="uppercase">
+                                {emergency ? "Emergency Route" : "Normal Route"}
+                            </Heading>
+
                         </Flex>
+
                         <Transfer
                             dataSource={pumpData}
                             titles={['Available', 'Groupped']}
@@ -204,14 +309,17 @@ const CreateGroups = () => {
                             render={(item) => item.title}
                             showSearch={{ filter: (inputValue, option) => option.title.toLowerCase().includes(inputValue.toLowerCase()) }}
                         />
-                        <Button mt={5} colorScheme="teal" isLoading={creatgroupbuttonLOader} onClick={handleCreateGroup}>
-                            Create Group
+
+                        <Button mt={5} colorScheme={emergency ? 'red': 'teal'} isLoading={creatgroupbuttonLOader} onClick={handleCreateGroup}>
+                            {emergency ? "Create Emergency Group" : "Create Group"}
                         </Button>
+
                         <Divider mt={7} />
 
                         <Heading mt={6} size="xs" textTransform="uppercase">
                             Group List
                         </Heading>
+
                         <Table variant="simple" mt={4}>
                             <thead>
                                 <Tr>
@@ -237,7 +345,6 @@ const CreateGroups = () => {
                                             <Button colorScheme="teal" size="sm" onClick={() => handleShowSites(group)}>
                                                 Show Sites
                                             </Button>
-
 
                                             <Popconfirm
                                                 title="Delete the task"

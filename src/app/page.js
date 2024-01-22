@@ -5,6 +5,8 @@ import axios from 'axios';
 import { Box, Button, Select } from '@chakra-ui/react';
 import Loader from "../Components/LOader"
 import { useRouter } from 'next/navigation';
+import {getUsers} from '@/redux/features/users-slice'
+import { useDispatch, useSelector } from 'react-redux';
 
 const MapDisplay = () => {
   
@@ -21,6 +23,8 @@ const MapDisplay = () => {
   const [resetMap, setResetMap] = useState(false);
   const [show, setShow] = useState(true);
   const router = useRouter();
+  const dispatch = useDispatch();
+
 
   useEffect(() => {
     if (resetMap) {
@@ -28,6 +32,15 @@ const MapDisplay = () => {
     }
   }, [resetMap]);
 
+  useEffect(()=> {
+    getUsersFun();
+  }, [])
+
+  const getUsersFun = async () => {
+    const response = await axios.get('/api/user/getUserWithGroups');
+    console.log("RESP", response.data.message)
+    dispatch(getUsers(response.data.message))
+  }
  
   useEffect(() => {
     setShow(false);
