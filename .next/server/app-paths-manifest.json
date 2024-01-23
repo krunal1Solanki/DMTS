@@ -1,7 +1,12 @@
 {
   "/page": "app/page.js",
-  "/users/page": "app/users/page.js",
   "/settings/page": "app/settings/page.js",
-  "/scheduler/page": "app/scheduler/page.js",
-  "/login/page": "app/login/page.js"
+  "/users/page": "app/users/page.js",
+  "/login/page": "app/login/page.js",
+  "/favicon.ico/route": "app/favicon.ico/route.js",
+  "/api/user/getUserWithGroups/route": "app/api/user/getUserWithGroups/route.js",
+  "/api/project/getAllProjects/route": "app/api/project/getAllProjects/route.js",
+  "/api/sites/getSitesByProjectId/route": "app/api/sites/getSitesByProjectId/route.js",
+  "/api/sites/getAllSites/route": "app/api/sites/getAllSites/route.js",
+  "/api/sites/getSiteGroups/route": "app/api/sites/getSiteGroups/route.js"
 }

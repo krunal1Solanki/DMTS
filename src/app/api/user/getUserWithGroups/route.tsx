@@ -6,7 +6,7 @@ import userModel from "@/models/userModel.js"
 connect()
 export async function GET (request : NextRequest) {
     try {
-        const users = await userModel.find({isPMSCUser : true}).select('_id assignedGroups OperatorName');
+        const users = await userModel.find({isPMSCUser : true}).select('_id assignedGroups OperatorName imeiPMSCApproved imeiPMSC  pmscUserData');
 
         return NextResponse.json({
           message: users

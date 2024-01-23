@@ -1,6 +1,7 @@
 "use client"
 import React, { useState, useEffect } from 'react';
 import { Transfer, message, Popconfirm } from 'antd';
+import { FaExclamationTriangle, FaMapMarker } from 'react-icons/fa';
 import axios from 'axios';
 import { useToast } from '@chakra-ui/react';
 import { useSelector } from 'react-redux';
@@ -98,7 +99,7 @@ const CreateGroups = () => {
                 position: 'top-right',
                 description: 'Please select sites for grouping',
                 status: 'warning',
-                duration : '3000'
+                duration: '3000'
             })
             return;
         }
@@ -261,7 +262,7 @@ const CreateGroups = () => {
         <Card>
             <CardHeader borderBottomWidth="1px" bg={!emergency ? "teal.600" : "red.500"} color="white" textAlign="center" padding="4">
                 <Heading size="md" textTransform="uppercase">
-                   {!emergency ? 'Create Groups' : 'Create Group (Emergency Mode)'}
+                    {!emergency ? 'Create Groups' : 'Create Group (Emergency Mode)'}
                 </Heading>
             </CardHeader>
             <CardBody>
@@ -289,8 +290,19 @@ const CreateGroups = () => {
                                 </>}
                             </Flex>
 
-                            <Heading mb={5} size="sm" backgroundColor={emergency ? 'red.500' : 'teal.300'} p='2' onClick={() => setEmergency(!emergency)} borderRadius={'20%'} textTransform="uppercase">
-                                {emergency ? "Emergency Route" : "Normal Route"}
+                            <Heading
+                                mb={5}
+                                size="sm"
+                                backgroundColor={emergency ? 'red.500' : 'rgb(49, 151, 149)'}
+                                p='3'
+                                onClick={() => setEmergency(!emergency)}
+                                color={'white'}
+                                textTransform="uppercase"
+                            >
+                                <Flex alignItems="center">
+                                    {emergency ? <FaExclamationTriangle style={{ marginRight: '0.5rem' }} /> : <FaMapMarker style={{ marginRight: '0.5rem' }} />}
+                                    {emergency ? "Emergency Route" : "Normal Route"}
+                                </Flex>
                             </Heading>
 
                         </Flex>
@@ -310,7 +322,7 @@ const CreateGroups = () => {
                             showSearch={{ filter: (inputValue, option) => option.title.toLowerCase().includes(inputValue.toLowerCase()) }}
                         />
 
-                        <Button mt={5} colorScheme={emergency ? 'red': 'teal'} isLoading={creatgroupbuttonLOader} onClick={handleCreateGroup}>
+                        <Button mt={5} colorScheme={emergency ? 'red' : 'teal'} isLoading={creatgroupbuttonLOader} onClick={handleCreateGroup}>
                             {emergency ? "Create Emergency Group" : "Create Group"}
                         </Button>
 
