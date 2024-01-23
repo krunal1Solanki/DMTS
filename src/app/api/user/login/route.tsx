@@ -8,9 +8,30 @@ connect();
 
 export async function POST(request: NextRequest,) {
     try {
-        const { OperatorName, password } = await request.json();
+        const { OperatorName, password, imeiNumber } = await request.json();
+        //imeiPMSC, imeiPMSCApproved
+        // no, no,
+        // 
         const user = await userModel.findOne({"pmscUserData.employeeId" : OperatorName });
         console.log({ user });
+
+
+        if(imeiNumber) {
+            const imei = user.imeiPMSC;
+            const imeiPMSCApproved = user.imeiPMSCApproved;
+            if(!imei || (imei && imei != imeiNumber && imeiPMSCApproved)) {
+                user.imeiPMSC =  imeiNumber;
+                await user.save();
+                return NextResponse.json({
+                    message : "IMEI in under approval",
+                })
+            }
+            if(imei && !imeiPMSCApproved) {
+                return NextResponse.json({
+                    message : "IMEI is not approved yet",
+                })
+            }
+         }
 
         if (!user) return NextResponse.json({
             message: "User not found!"

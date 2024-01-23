@@ -31,6 +31,8 @@ const schema = new Schema({
     IMEINumber: {
         type: String,
     },
+    imeiPMSC : String,
+    imeiPMSCApproved : Boolean,
     isImeiApproved: {
         type: Boolean,
     },

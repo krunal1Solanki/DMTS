@@ -10,6 +10,7 @@ import ActiveSite from '../../Components/ActiveSite';
 import SetRates from '../../Components/SetRates';
 import Office from '../../Components/Office';
 import QueryDisplay from '../../Components/QueryDisplay';
+import ImeiApproval from '../../Components/ImeiApproval'
 
 
 const Settings = () => {
@@ -31,6 +32,7 @@ const Settings = () => {
             <Tab _selected={{ color: 'white', bg: 'teal.500' }} onClick={()=> setTab(3)}>Active Site</Tab>
             <Tab _selected={{ color: 'white', bg: 'teal.500' }} onClick={()=> setTab(4)}>Query</Tab>
             <Tab _selected={{ color: 'white', bg: 'teal.500' }} onClick={()=> setTab(5)}>Office</Tab>
+            <Tab _selected={{ color: 'white', bg: 'teal.500' }} onClick={()=> setTab(6)}>IMEI Approval</Tab>
           </TabList>
           <TabPanels>
             <TabPanel>
@@ -47,6 +49,9 @@ const Settings = () => {
             </TabPanel>
             <TabPanel>
                 {tab == 5 && <Office/>}
+            </TabPanel>
+            <TabPanel>
+                {tab == 6 && <ImeiApproval/>}
             </TabPanel>
           </TabPanels>
         </Tabs>
