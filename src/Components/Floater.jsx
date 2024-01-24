@@ -1,32 +1,83 @@
 "use client"
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { FloatButton } from 'antd';
 import { CustomerServiceOutlined, LogoutOutlined, QuestionCircleOutlined } from '@ant-design/icons';
-import { Box, useToast } from '@chakra-ui/react';
-import { Button, Modal, ModalOverlay, ModalContent, ModalHeader, ModalBody, ModalCloseButton, VStack, Select, Textarea } from '@chakra-ui/react';
+import { Box, useToast, Input, Button, Modal, ModalOverlay, ModalContent, ModalHeader, ModalBody, ModalCloseButton, VStack, Select, Textarea, FormControl, FormLabel, FormHelperText, IconButton, Stack, Text } from '@chakra-ui/react';
+import { FaFile, FaPaperPlane } from 'react-icons/fa';
 import { QuestionIcon, CheckCircleIcon, WarningIcon } from '@chakra-ui/icons';
 import axios from 'axios';
 import { useRouter } from 'next/navigation';
+import { useSelector } from 'react-redux';
 
 const Floater = () => {
   const toast = useToast();
   const [isOpen, setIsOpen] = useState(false);
-  const [queryType, setQueryType] = useState('');
+  const [selectedSite, setSelectedSite] = useState('');
+  const [selectedUser, setSelectedUser] = useState('');
+  const [querySubject, setQuerySubject] = useState('');
   const [queryDescription, setQueryDescription] = useState('');
+  const [selectedPriority, setSelectedPriority] = useState('low'); // Default priority
+  const [attachments, setAttachments] = useState([]);
+  const userReducer = useSelector((state) => state.userReducer);
+  const siteReducer = useSelector((state) => state.siteReducer);
+  const authReducer = useSelector((state) => state.authReducer)
+  const [users, setUsers] = useState(userReducer.value.users || []);
+  const [sites, setSites] = useState(siteReducer.value.sites || []);
+  const [siteOptions, setSiteOptions] = useState([]);
+  const [userOptions, setUserOptions] = useState([]);
+
+  useEffect(() => {
+    setUsers(userReducer.value.users);
+  }, [userReducer]);
+
+  useEffect(() => {
+    setSites(siteReducer.value.sites);
+  }, [siteReducer]);
+
+  useEffect(() => {
+    if(sites && sites.length > 0) {
+      const updatedSiteOptions = sites.map((site) => site.pumpName) || [];
+      setSiteOptions(updatedSiteOptions);
+    }
+  }, [sites]);
+
+  useEffect(() => {
+    // Update userOptions when 'users' change
+    if(users && users.length > 0) {
+      const updatedUserOptions = users?.map((user) => user.OperatorName) || [];
+      setUserOptions(updatedUserOptions);
+    }
+  }, [users]);
+
+
   const router = useRouter();
 
   const handleOpenModal = () => setIsOpen(true);
   const handleCloseModal = () => {
     setIsOpen(false);
-    // Reset form fields on modal close
-    setQueryType('');
+    setSelectedSite('');
+    setSelectedUser('');
+    setQuerySubject('');
     setQueryDescription('');
+    setSelectedPriority('low');
+    setAttachments([]);
   };
 
   const handleQuerySubmit = async () => {
     try {
-      const info = await axios.post('/api/setting/raiseQuery', { queryType, queryDescription });
-      console.log("INFO", info);
+      const formData = new FormData();
+      formData.append('selectedSite', selectedSite);
+      formData.append('selectedUser', selectedUser);
+      formData.append('querySubject', querySubject);
+      formData.append('queryDescription', queryDescription);
+      formData.append('selectedPriority', selectedPriority);
+      formData.append('attachments', attachments)
+      const userCurr = {name : authReducer.value.user.OperatorName, _id : authReducer.value.user._id};
+      formData.append('responsibleUser', JSON.stringify(userCurr))
+      console.log(userCurr)
+      const info = await axios.post('/api/setting/raiseQuery', formData);
+
+
       toast({
         title: "Query Submitted",
         description: "Your query has been raised successfully",
@@ -65,12 +116,12 @@ const Floater = () => {
         position: 'top-right',
         status: 'success',
       });
-      router.push('/login')
+      router.push('/login');
     } catch (error) {
-      // Handle logout error if needed
       console.error('Logout Error:', error);
     }
   };
+
 
   return (
     <Box>
@@ -84,24 +135,76 @@ const Floater = () => {
         icon={<CustomerServiceOutlined />}
       >
         <FloatButton onClick={handleOpenModal} icon={<QuestionCircleOutlined />} />
-        <FloatButton onClick={handleLogout} icon={<LogoutOutlined />} /> {/* Add a logout button */}
+        <FloatButton onClick={handleLogout} icon={<LogoutOutlined />} />
       </FloatButton.Group>
       <Modal isOpen={isOpen} onClose={handleCloseModal}>
         <ModalOverlay />
         <ModalContent borderRadius="md">
           <ModalHeader textAlign="center" borderBottom="1px" pb={2}>
-            Raise Query
+            Raise Query or Complaint
           </ModalHeader>
           <ModalCloseButton />
           <ModalBody>
-            <VStack spacing={4}>
-              <Select placeholder="Select Query Type" value={queryType} onChange={(e) => setQueryType(e.target.value)}>
-                <option value="A">Type A</option>
-                <option value="B">Type B</option>
-                <option value="C">Type C</option>
+            <VStack spacing={4} >
+              <Select mt={3}
+                placeholder="Select Site"
+                value={selectedSite}
+                onChange={(e) => setSelectedSite(e.target.value)}
+              >
+                {siteOptions?.map((site) => (
+                  <option key={site} value={site}>
+                    {site}
+                  </option>
+                ))}
               </Select>
-              <Textarea placeholder="Query Description" value={queryDescription} onChange={(e) => setQueryDescription(e.target.value)} />
-              <Button colorScheme="teal" onClick={handleQuerySubmit}>
+              <Select
+                placeholder="Select User"
+                value={selectedUser}
+                onChange={(e) => setSelectedUser(e.target.value)}
+              >
+                {userOptions?.map((user) => (
+                  <option key={user} value={user}>
+                    {user}
+                  </option>
+                ))}
+              </Select>
+              <Input
+                placeholder="Subject"
+                value={querySubject}
+                onChange={(e) => setQuerySubject(e.target.value)}
+              />
+              <Textarea
+                placeholder="Query Description"
+                value={queryDescription}
+                onChange={(e) => setQueryDescription(e.target.value)}
+              />
+              <Select
+                placeholder="Select Priority"
+                value={selectedPriority}
+                onChange={(e) => setSelectedPriority(e.target.value)}
+              >
+                <option value="low">Low</option>
+                <option value="medium">Medium</option>
+                <option value="high">High</option>
+              </Select>
+              <FormControl>
+                <FormLabel>Attachments</FormLabel>
+                <Stack direction="row" spacing={2} align="center">
+                  <Input type="file" onChange={(e) => setAttachments(e.target.files[0])} multiple />
+                  <IconButton
+                    icon={<FaFile />}
+                    aria-label="View Attachments"
+                    onClick={() => {/* Add functionality to view attachments if needed */}}
+                  />
+                </Stack>
+                <FormHelperText>Attach any relevant files (if needed)</FormHelperText>
+              </FormControl>
+              <Button
+                mt={3}
+                leftIcon={<FaPaperPlane />}
+                colorScheme="teal"
+                onClick={handleQuerySubmit}
+              >
                 Submit Query
               </Button>
             </VStack>

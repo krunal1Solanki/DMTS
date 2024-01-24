@@ -12,6 +12,7 @@ import {
   Badge,
   IconButton,
   Card,
+  Text,
   CardBody,
   CardHeader,
   Heading,
@@ -20,7 +21,9 @@ import {
   Flex,
   Box,
 } from '@chakra-ui/react';
-import Loader from './LOader';
+
+import { BsEye, BsDownload, BsX } from 'react-icons/bs';
+import { Modal, ModalOverlay, ModalContent, ModalHeader, ModalBody, ModalCloseButton } from '@chakra-ui/react';
 
 const getStatusBadge = (status) => {
   switch (status) {
@@ -34,13 +37,14 @@ const getStatusBadge = (status) => {
       return null;
   }
 };
-
 const QueryDisplay = () => {
   const [queries, setQueries] = useState([]);
   const [filteredQueries, setFilteredQueries] = useState([]);
-  const [filterStatus, setFilterStatus] = useState('all'); // Default to show all queries
+  const [filterStatus, setFilterStatus] = useState('all');
   const [unsavedChanges, setUnsavedChanges] = useState(false);
-  const [LOader, setLOader] = useState(false);
+  const [loader, setLoader] = useState(false);
+  const [expandedQuery, setExpandedQuery] = useState(null); // New state for expanded query
+  const [isModalOpen, setIsModalOpen] = useState(false); // State to control modal visibility
   const toast = useToast();
 
   useEffect(() => {
@@ -48,7 +52,6 @@ const QueryDisplay = () => {
   }, []);
 
   useEffect(() => {
-    // Filter queries based on selected status
     if (filterStatus === 'all') {
       setFilteredQueries(queries);
     } else {
@@ -58,15 +61,17 @@ const QueryDisplay = () => {
   }, [queries, filterStatus]);
 
   const getAllQueries = async () => {
-    setLOader(true)
+    setLoader(true);
     try {
       const response = await axios.get('/api/setting/getQuery');
-      // Add the isModified property to each query object
-      const modifiedQueries = response.data.message.map(query => ({ ...query, isModified: false }));
+      const modifiedQueries = response.data.info.map((query) => ({
+        ...query,
+        isModified: false,
+      }));
       setQueries(modifiedQueries);
-      setLOader(false)
+      setLoader(false);
     } catch (error) {
-      console.error('Error fetching queries:', error);
+      console.error('Error fetching queries:', error.message);
       toast({
         title: 'Error',
         description: 'An error occurred while fetching queries.',
@@ -81,13 +86,12 @@ const QueryDisplay = () => {
   const handleSelectChange = (index, newStatus) => {
     const updatedQueries = [...queries];
     updatedQueries[index].queryStatus = newStatus;
-    updatedQueries[index].isModified = true; // Set isModified to true when changes are made
+    updatedQueries[index].isModified = true;
     setQueries(updatedQueries);
-    setUnsavedChanges(true); // Set unsavedChanges to true when changes are made
+    setUnsavedChanges(true);
   };
 
   const handleQueryStatusSubmit = async (id, newStatus) => {
-    
     try {
       await axios.post('/api/setting/updateQueryStatus', {
         _id: id,
@@ -104,9 +108,9 @@ const QueryDisplay = () => {
       });
 
       const updatedQueries = [...queries];
-      updatedQueries.find(query => query._id === id).isModified = false; // Reset isModified to false after submitting
+      updatedQueries.find((query) => query._id === id).isModified = false;
       setQueries(updatedQueries);
-      setUnsavedChanges(false); // Reset unsavedChanges to false after submitting
+      setUnsavedChanges(false);
     } catch (error) {
       console.error('Error updating query status:', error);
 
@@ -125,12 +129,33 @@ const QueryDisplay = () => {
     setFilterStatus(e.target.value);
   };
 
+  // Function to toggle the expanded state for a query and open modal
+  const toggleExpandedQuery = (query) => {
+    setExpandedQuery(query);
+    setIsModalOpen(true);
+  };
+
+  // Function to close the modal
+  const closeModal = () => {
+    setIsModalOpen(false);
+  };
+
+  // Function to download the image
+  const downloadImage = () => {
+    const link = document.createElement('a');
+    link.href = `data:image/png;base64,${expandedQuery.attachments}`;
+    link.download = `query_${expandedQuery._id}.png`;
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  };
+
   return (
     <Card>
       <CardHeader
-        bg={'teal.500'} // Change background color based on unsavedChanges
+        bg={'teal.500'}
         borderBottomWidth="1px"
-        borderColor={'teal.600'} // Change border color based on unsavedChanges
+        borderColor={unsavedChanges ? 'red' : 'teal.600'}
         color="white"
         textAlign="center"
         padding="4"
@@ -140,7 +165,7 @@ const QueryDisplay = () => {
         </Heading>
       </CardHeader>
       <CardBody>
-        <Flex justifyContent='flex-end'>
+        <Flex justifyContent="flex-end">
           <Select w={'200px'} value={filterStatus} onChange={handleFilterChange} mb={4}>
             <option value="all">Show All</option>
             <option value="pending">Pending</option>
@@ -148,53 +173,100 @@ const QueryDisplay = () => {
             <option value="hold">Hold</option>
           </Select>
         </Flex>
-        {LOader ? (<Loader/>) : (<>
-          <Table variant="simple">
-          <Thead>
-            <Tr>
-              <Th>No</Th>
-              <Th>Query Type</Th>
-              <Th>Description</Th>
-              <Th>Status</Th>
-              <Th>Action</Th>
-            </Tr>
-          </Thead>
-          <Tbody>
-            {filteredQueries.map((query, index) => (
-              <Tr key={query._id} >
-                <Td>{index + 1}</Td>
-                <Td>{query.queryType}</Td>
-                <Td>{query.queryDescription}</Td>
-                <Td>{getStatusBadge(query.queryStatus)}</Td>
-
-                <Td>
-                  <Select
-                    value={query.queryStatus}
-                    onChange={(e) => handleSelectChange(index, e.target.value)}
-                  >
-                    <option value="pending">Pending</option>
-                    <option value="resolved">Resolved</option>
-                    <option value="hold">Hold</option>
-                  </Select>
-                </Td>
-                <Td display={'flex'} alignItems={'center'} gap={'7px'}>
-                  <Button
-                    colorScheme='teal'
-                    onClick={() => handleQueryStatusSubmit(query._id, query.queryStatus)}
-                  >
-                    Submit
-                  </Button>
-                  {query.isModified && <Box bg='red' h={'7px'} w={'7px'} borderRadius={'100%'}>
-                  </Box>}
-                </Td>
+        <>
+          <Table variant="simple" overflowX={{ base: 'auto', md: 'hidden' }}>
+            <Thead>
+              <Tr>
+                <Th>No</Th>
+                <Th>Query Subject</Th>
+                <Th>Query Description</Th>
+                <Th>Selected Site</Th>
+                <Th>Selected User</Th>
+                <Th>Responsible User</Th>
+                <Th>Selected Priority</Th>
+                <Th>Attachments</Th>
+                <Th>Status</Th>
+                <Th>Action</Th>
               </Tr>
-            ))}
-          </Tbody>
-        </Table>
-        </>)}
+            </Thead>
+            <Tbody>
+              {filteredQueries.map((query, index) => (
+                <Tr key={query._id}>
+                  <Td>{index + 1}</Td>
+                  <Td>
+                    <Text isTruncated>{query.querySubject}</Text>
+                  </Td>
+                  <Td>
+                    <Text isTruncated>{query.queryDescription}</Text>
+                  </Td>
+                  <Td>{query.selectedSite}</Td>
+                  <Td>{query.selectedUser}</Td>
+                  <Td>{query.responsibleUser.name}</Td>
+                  <Td>{query.selectedPriority}</Td>
+                  <Td>
+                    <IconButton
+                      icon={<BsEye />}
+                      onClick={() => toggleExpandedQuery(query)}
+                      variant="ghost"
+                      size="sm"
+                      aria-label="Toggle Image"
+                    />
+                  </Td>
+                  <Td>
+                    <Select
+                      value={query.queryStatus}
+                      onChange={(e) => handleSelectChange(index, e.target.value)}
+                    >
+                      <option value="pending">Pending</option>
+                      <option value="resolved">Resolved</option>
+                      <option value="hold">Hold</option>
+                    </Select>
+                  </Td>
+                  <Td display={'flex'} alignItems={'center'} gap={'7px'}>
+                    <Button
+                      colorScheme='teal'
+                      onClick={() => handleQueryStatusSubmit(query._id, query.queryStatus)}
+                    >
+                      Submit
+                    </Button>
+                    {query.isModified && (
+                      <Box bg='red' h={'7px'} w={'7px'} borderRadius={'100%'}></Box>
+                    )}
+                  </Td>
+                </Tr>
+              ))}
+            </Tbody>
+          </Table>
+        </>
+        {/* Modal for displaying the image */}
+        <Modal isOpen={isModalOpen} onClose={closeModal}>
+          <ModalOverlay />
+          <ModalContent>
+            <ModalHeader>{`Attachment for query ${expandedQuery?.querySubject}`}</ModalHeader>
+            <ModalCloseButton />
+            <ModalBody>
+              {expandedQuery?.attachments && (
+                <img
+                  src={`data:image/png;base64,${expandedQuery.attachments}`}
+                  alt={`Attachment for query ${expandedQuery._id}`}
+                  style={{ width: '100%', maxHeight: '70vh', objectFit: 'contain' }}
+                />
+              )}
+            </ModalBody>
+            {/* Action buttons in the modal */}
+            <Flex justifyContent="flex-end" p={4}>
+              <Button leftIcon={<BsDownload />} colorScheme="teal" onClick={downloadImage}>
+                Download
+              </Button>
+              <Button leftIcon={<BsX />} ml={2} onClick={closeModal}>
+                Close
+              </Button>
+            </Flex>
+          </ModalContent>
+        </Modal>
       </CardBody>
     </Card>
   );
 };
 
-export default QueryDisplay ;
+export default QueryDisplay;

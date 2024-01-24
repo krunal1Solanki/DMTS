@@ -1,24 +1,38 @@
-const { mongoose, mongo } = require('mongoose')
-const Schema = mongoose.Schema
-
+const { mongoose } = require('mongoose');
+const Schema = mongoose.Schema;
 
 const schema = new Schema(
   {
-    queryType: {
+    selectedSite: {
       type: String,
-      enum: ['A', 'B', "C"],
       required: true,
     },
-
-    queryStatus: {
-        type: String,
-        enum: ['pending', 'resolved', 'hold'],
-        required: true,
-        default :'pending'
-      },
+    selectedUser: {
+      type: String,
+      required: true,
+    },
+    responsibleUser : Object,
+    querySubject: {
+      type: String,
+      required: true,
+    },
     queryDescription: {
       type: String,
       required: true,
+    },
+    selectedPriority: {
+      type: String,
+      enum: ['low', 'medium', 'high'],
+      required: true,
+    },
+    attachments: {
+      type: String, // Assuming you store file paths or URLs
+    },
+    queryStatus: {
+      type: String,
+      enum: ['pending', 'resolved', 'hold'],
+      required: true,
+      default: 'pending',
     },
     creationDate: {
       type: Date,
@@ -32,4 +46,4 @@ const schema = new Schema(
 
 const queryModel = mongoose.models.queryModel || mongoose.model("queryModel", schema);
 
-export default queryModel
+export default queryModel;

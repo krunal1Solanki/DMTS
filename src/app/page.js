@@ -7,6 +7,7 @@ import Loader from "../Components/LOader"
 import { useRouter } from 'next/navigation';
 import {getUsers} from '@/redux/features/users-slice'
 import { useDispatch, useSelector } from 'react-redux';
+import {getActiveSites} from '../redux/features/activeSites-slice'
 
 const MapDisplay = () => {
   
@@ -34,7 +35,14 @@ const MapDisplay = () => {
 
   useEffect(()=> {
     getUsersFun();
+    getActiveSitesFun();
   }, [])
+
+  const getActiveSitesFun = async () => {
+    const response = await axios.get('/api/sites/getActiveSites');
+    console.log("SITES",response.data.sites)
+    dispatch(getActiveSites(response.data.sites))
+  }
 
   const getUsersFun = async () => {
     const response = await axios.get('/api/user/getUserWithGroups');

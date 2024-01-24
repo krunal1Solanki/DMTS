@@ -7,7 +7,7 @@ import { DeleteFilled } from '@ant-design/icons';
 import axios from 'axios';
 import { Table, Space } from 'antd';
 import Loader from "./LOader"
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 const { Option } = Select;
 
 const AssignGroups = () => {
@@ -21,6 +21,7 @@ const AssignGroups = () => {
   const [deleteConfirmationVisible, setDeleteConfirmationVisible] = useState(false);
   const [deletingGroup, setDeletingGroup] = useState(null);
   const [Loaders, setLoaders] = useState(false);
+  const dispatch = useDispatch();
 
   useEffect(() => {
     getGroups();
@@ -37,6 +38,11 @@ const AssignGroups = () => {
     }
   };
 
+
+  const getUsers = async () => {
+    const response = await axios.get('/api/user/getUserWithGroups');
+    setUsers(response.data.message)
+  }
 
 
   const handleAssignSite = (user) => {
