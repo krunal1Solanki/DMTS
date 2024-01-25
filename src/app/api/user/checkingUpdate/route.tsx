@@ -7,13 +7,17 @@ connect();
 export async function POST(request: NextRequest, params: any) {
     try {
         const body = await request.json();
-        const {userId : _id, latitude, longitude} = body;
+        const {userId : _id, latitude, longitude, checkingStatus} = body;
 
         const user  = await userModel.findOne({_id});
-        const checkingStatus = user.checkingStatus || "checkedOut";
 
+        if(!user) {
+            NextResponse.json({
+                message : "User not found!"
+            })
+        }
         console.log("checking Status", checkingStatus)
-
+        
 
         if(checkingStatus == "checkedIn") {
             user.checkingStatus = "checkedOut";
@@ -34,11 +38,7 @@ export async function POST(request: NextRequest, params: any) {
                 userId : _id    
             })
         }
-        if(!user) {
-            NextResponse.json({
-                message : "User not found!"
-            })
-        }
+        
 
 
         return NextResponse.json({
