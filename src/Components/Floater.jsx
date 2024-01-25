@@ -205,7 +205,7 @@ const Floater = () => {
               <FormControl>
                 <FormLabel>Attachments</FormLabel>
                 <Stack direction="row" spacing={2} align="center">
-                  <Input type="image" onChange={(e) => setAttachments(e.target.files[0])} />
+                  <Input type="file"  accept="image/*" onChange={(e) => setAttachments(e.target.files[0])} />
                   <IconButton
                     icon={<FaFile />}
                     aria-label="View Attachments"
