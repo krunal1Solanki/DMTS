@@ -1,8 +1,13 @@
 {
   "/users/page": "app/users/page.js",
-  "/settings/page": "app/settings/page.js",
-  "/login/page": "app/login/page.js",
-  "/api/setting/getGroupById/[groupId]/route": "app/api/setting/getGroupById/[groupId]/route.js",
+  "/page": "app/page.js",
+  "/api/sites/getAllSites/route": "app/api/sites/getAllSites/route.js",
+  "/api/sites/getSiteGroups/route": "app/api/sites/getSiteGroups/route.js",
   "/favicon.ico/route": "app/favicon.ico/route.js",
-  "/page": "app/page.js"
+  "/api/sites/getActiveSites/route": "app/api/sites/getActiveSites/route.js",
+  "/api/user/getUserWithGroups/route": "app/api/user/getUserWithGroups/route.js",
+  "/api/project/getAllProjects/route": "app/api/project/getAllProjects/route.js",
+  "/api/sites/getSitesByProjectId/route": "app/api/sites/getSitesByProjectId/route.js",
+  "/api/sites/deleteGroup/route": "app/api/sites/deleteGroup/route.js",
+  "/api/sites/createSiteGroup/route": "app/api/sites/createSiteGroup/route.js"
 }

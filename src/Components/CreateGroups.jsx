@@ -110,7 +110,9 @@ const CreateGroups = () => {
 
         const siteArray = pumpNames.map((pumpName, index) => ({
             siteId: targetKeys[index],
-            pumpName: pumpName
+            pumpName: pumpName,
+            latitude: pumpData[index].latitude,    // Include latitude
+            longitude: pumpData[index].longitude,  // Include longitude
         }));
 
         try {
@@ -208,6 +210,8 @@ const CreateGroups = () => {
         key: site._id,
         title: site.pumpName,
         description: site.description,
+        latitude: site.latitude,    // Include latitude
+        longitude: site.longitude,  // Include longitude
     }));
 
     const handleDeleteGroup = async (groupId) => {
