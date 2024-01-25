@@ -180,11 +180,11 @@ const QueryDisplay = () => {
                 <Th>No</Th>
                 <Th>Query Subject</Th>
                 <Th>Query Description</Th>
-                <Th>Selected Site</Th>
-                <Th>Selected User</Th>
-                <Th>Responsible User</Th>
-                <Th>Selected Priority</Th>
-                <Th>Attachments</Th>
+                <Th> Site</Th>
+                <Th>Assigned User</Th>
+                <Th>Main User</Th>
+                <Th>Priority</Th>
+                <Th>Image</Th>
                 <Th>Status</Th>
                 <Th>Action</Th>
               </Tr>

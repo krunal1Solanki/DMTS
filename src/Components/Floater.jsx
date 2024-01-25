@@ -145,52 +145,67 @@ const Floater = () => {
           </ModalHeader>
           <ModalCloseButton />
           <ModalBody>
-            <VStack spacing={4} >
-              <Select mt={3}
-                placeholder="Select Site"
-                value={selectedSite}
-                onChange={(e) => setSelectedSite(e.target.value)}
-              >
-                {siteOptions?.map((site) => (
-                  <option key={site} value={site}>
-                    {site}
-                  </option>
-                ))}
-              </Select>
-              <Select
-                placeholder="Select User"
-                value={selectedUser}
-                onChange={(e) => setSelectedUser(e.target.value)}
-              >
-                {userOptions?.map((user) => (
-                  <option key={user} value={user}>
-                    {user}
-                  </option>
-                ))}
-              </Select>
-              <Input
-                placeholder="Subject"
-                value={querySubject}
-                onChange={(e) => setQuerySubject(e.target.value)}
-              />
-              <Textarea
-                placeholder="Query Description"
-                value={queryDescription}
-                onChange={(e) => setQueryDescription(e.target.value)}
-              />
-              <Select
-                placeholder="Select Priority"
-                value={selectedPriority}
-                onChange={(e) => setSelectedPriority(e.target.value)}
-              >
-                <option value="low">Low</option>
-                <option value="medium">Medium</option>
-                <option value="high">High</option>
-              </Select>
+            <VStack spacing={4} align="stretch">
+              <FormControl>
+                <FormLabel>Site</FormLabel>
+                <Select
+                  placeholder="Select Site"
+                  value={selectedSite}
+                  onChange={(e) => setSelectedSite(e.target.value)}
+                >
+                  {siteOptions?.map((site) => (
+                    <option key={site} value={site}>
+                      {site}
+                    </option>
+                  ))}
+                </Select>
+              </FormControl>
+              <FormControl>
+                <FormLabel>Assign To</FormLabel>
+                <Select
+                  placeholder="Select User"
+                  value={selectedUser}
+                  onChange={(e) => setSelectedUser(e.target.value)}
+                >
+                  {userOptions?.map((user) => (
+                    <option key={user} value={user}>
+                      {user}
+                    </option>
+                  ))}
+                </Select>
+              </FormControl>
+              <FormControl>
+                <FormLabel>Subject</FormLabel>
+                <Input
+                  placeholder="Subject"
+                  value={querySubject}
+                  onChange={(e) => setQuerySubject(e.target.value)}
+                />
+              </FormControl>
+              <FormControl>
+                <FormLabel>Description</FormLabel>
+                <Textarea
+                  placeholder="Query Description"
+                  value={queryDescription}
+                  onChange={(e) => setQueryDescription(e.target.value)}
+                />
+              </FormControl>
+              <FormControl>
+                <FormLabel>Priority</FormLabel>
+                <Select
+                  placeholder="Select Priority"
+                  value={selectedPriority}
+                  onChange={(e) => setSelectedPriority(e.target.value)}
+                >
+                  <option value="low">Low</option>
+                  <option value="medium">Medium</option>
+                  <option value="high">High</option>
+                </Select>
+              </FormControl>
               <FormControl>
                 <FormLabel>Attachments</FormLabel>
                 <Stack direction="row" spacing={2} align="center">
-                  <Input type="file" onChange={(e) => setAttachments(e.target.files[0])} multiple />
+                  <Input type="image" onChange={(e) => setAttachments(e.target.files[0])} />
                   <IconButton
                     icon={<FaFile />}
                     aria-label="View Attachments"

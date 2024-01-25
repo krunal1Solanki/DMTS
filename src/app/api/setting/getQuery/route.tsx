@@ -24,6 +24,7 @@ export async function GET (request : NextRequest) {
                     selectedPriority: query.selectedPriority,
                     attachments: fileBuffer.toString("base64"), // Sending base64 encoded file content
                     responsibleUser: query.responsibleUser,
+                    queryStatus : query.queryStatus
                 };
             })
         );
