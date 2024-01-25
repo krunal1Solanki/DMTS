@@ -5,10 +5,12 @@ import { FaExclamationTriangle, FaMapMarker } from 'react-icons/fa';
 import axios from 'axios';
 import { useToast } from '@chakra-ui/react';
 import { useSelector } from 'react-redux';
+import { ArrowRightIcon } from '@chakra-ui/icons';
 import {
     Card,
     CardHeader,
     CardBody,
+    Grid,
     Heading,
     Input,
     Button,
@@ -106,14 +108,28 @@ const CreateGroups = () => {
 
         setCreateGroupButtonLOader(true)
 
+        console.log("OIO 2", pumpData)
         const pumpNames = pumpData.filter((item) => targetKeys.includes(item.key)).map((item) => item.title);
-
-        const siteArray = pumpNames.map((pumpName, index) => ({
-            siteId: targetKeys[index],
-            pumpName: pumpName,
-            latitude: pumpData[index].latitude,    // Include latitude
-            longitude: pumpData[index].longitude,  // Include longitude
+        console.log("OIO 4", pumpNames, targetKeys)
+        
+        const siteArray = pumpData
+        .filter((item) => targetKeys.includes(item.key+""))
+        .map((item) => ({
+            siteId: item._id,
+            pumpName: item.title,
+            latitude: item.latitude,
+            longitude: item.longitude
         }));
+
+        console.log("OIO 5", siteArray)
+    
+
+        // const siteArray = pumpNames.map((pumpName, index) => ({
+        //     siteId: targetKeys[index],
+        //     pumpName: pumpName,
+        //     latitude: pumpData[index].latitude,    // Include latitude
+        //     longitude: pumpData[index].longitude,  // Include longitude
+        // }));
 
         try {
 
@@ -379,25 +395,34 @@ const CreateGroups = () => {
                         </Table>
 
                         {currentGroup && (
-                            <Modal isOpen={isOpen} onClose={onClose}>
-                                <ModalOverlay />
-                                <ModalContent>
-                                    <ModalHeader>{`Sites for Group: ${currentGroup.groupName}`}</ModalHeader>
-                                    <ModalCloseButton />
-                                    <ModalBody>
-                                        <ul style={{ listStyleType: 'none', padding: 0 }}>
-                                            {currentGroup.sites.map((site, index) => (
-                                                <li key={site.siteId}>{`${index + 1}. ${site.pumpName}`}</li>
-                                            ))}
-                                        </ul>
-                                    </ModalBody>
-                                    <ModalFooter>
-                                        <Button colorScheme="teal" onClick={onClose}>
-                                            Close
-                                        </Button>
-                                    </ModalFooter>
-                                </ModalContent>
-                            </Modal>
+                          <Modal isOpen={isOpen} onClose={onClose}>
+                          <ModalOverlay />
+                          <ModalContent>
+                              <ModalHeader>{`Sites for Group: ${currentGroup.groupName}`}</ModalHeader>
+                              <ModalCloseButton />
+                              <ModalBody>
+                                  <Grid templateColumns="repeat(auto-fill, minmax(200px, 1fr))" gap={4}>
+                                      {currentGroup.sites.map((site, index) => (
+                                          <Card key={site.siteId} p={3} boxShadow="md">
+                                            {console.log("OIO", site)}
+                                              <Heading size="md" mb={2}>{site.pumpName}</Heading>
+                                              <Text fontSize="sm" color="gray.500" mb={2}>{site.description}</Text>
+                                              <Flex align="center" mb={2}>
+                                                  <FaMapMarker style={{ marginRight: '0.5rem' }} />
+                                                  <Text fontSize="sm">{`Location: (${site.latitude}, ${site.longitude})`}</Text>
+                                              </Flex>
+                                          </Card>
+                                      ))}
+                                  </Grid>
+                              </ModalBody>
+                              <ModalFooter>
+                                  <Button colorScheme="teal" onClick={onClose}>
+                                      Close
+                                  </Button>
+                              </ModalFooter>
+                          </ModalContent>
+                      </Modal>
+                      
                         )}
                     </>
                 )}
