@@ -224,7 +224,7 @@ const CreateGroups = () => {
 
     const pumpData = sites.map((site) => ({
         key: site._id,
-        title: site.pumpName,
+        title: site.pumpName ? site.pumpName : site.name + " (O)",
         description: site.description,
         latitude: site.latitude,    // Include latitude
         longitude: site.longitude,  // Include longitude
@@ -405,7 +405,7 @@ const CreateGroups = () => {
                                       {currentGroup.sites.map((site, index) => (
                                           <Card key={site.siteId} p={3} boxShadow="md">
                                             {console.log("OIO", site)}
-                                              <Heading size="md" mb={2}>{site.pumpName}</Heading>
+                                              <Heading size="md" mb={2}>{site.pumpName ? site.pumpName : site.name+" (O)"}</Heading>
                                               <Text fontSize="sm" color="gray.500" mb={2}>{site.description}</Text>
                                               <Flex align="center" mb={2}>
                                                   <FaMapMarker style={{ marginRight: '0.5rem' }} />
