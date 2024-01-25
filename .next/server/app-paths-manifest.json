@@ -1,6 +1,3 @@
 {
-  "/favicon.ico/route": "app/favicon.ico/route.js",
-  "/users/page": "app/users/page.js",
-  "/api/sites/getSiteGroups/route": "app/api/sites/getSiteGroups/route.js",
-  "/api/sites/getAllSites/route": "app/api/sites/getAllSites/route.js"
+  "/api/user/checkingUpdate/route": "app/api/user/checkingUpdate/route.js"
 }

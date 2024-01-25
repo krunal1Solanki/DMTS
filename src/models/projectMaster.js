@@ -89,9 +89,9 @@ const schema = new Schema({
         default: new Date().toISOString()
     }
 }, {
-    collection: 'projectMaster'
+    collection: 'ProjectMaster'
 })
 
-const projectMaster = mongoose.models.projectMaster || mongoose.model("projectMaster", schema);
+const projectMaster = mongoose.models.ProjectMaster || mongoose.model("ProjectMaster", schema);
 
 export default projectMaster;

@@ -28,6 +28,11 @@ const schema = new Schema({
         //enum: ["Admin", "Desire", "Contractor", "Gov User", "Operator"],
         default: "Operator"
     },
+    checkingStatus: {
+        type: String,
+        enum: ["checkedIn", "checkedOut"],
+        default: "checkedOut"
+    },
     IMEINumber: {
         type: String,
     },
