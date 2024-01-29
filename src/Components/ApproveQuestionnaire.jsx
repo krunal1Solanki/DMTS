@@ -1,7 +1,7 @@
 "use client";
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
-import { Box, Text, VStack, HStack, Divider, Image } from '@chakra-ui/react';
+import { Box, Text, VStack, HStack, Divider, Image, Heading, Flex, Button } from '@chakra-ui/react';
 import { StarIcon, CheckIcon, CloseIcon } from '@chakra-ui/icons';
 import { Checkbox, Input, InputGroup, InputLeftElement, Select } from '@chakra-ui/react'; // Add Chakra UI components
 import { AiOutlineSearch } from 'react-icons/ai'; // Assuming you have the Ant Design icons
@@ -24,6 +24,27 @@ const ApproveQuestionnaire = () => {
             console.error("Error fetching questionnaires:", error);
         }
     };
+
+    const approveOnm = async (id) => {
+        try {
+            const response = await axios.get(`/api/setting/approveOnm/${id}`);
+            // Handle the response if needed
+            console.log('Approval response:', response.data);
+
+            // Show a success toast or perform other actions
+            toast({
+                description: 'ONM questionnaire approved successfully',
+                status: 'success',
+                position: 'top-right',
+                duration: 10000,
+                isClosable: true,
+            });
+        } catch (error) {
+            console.error('Error approving ONM questionnaire:', error);
+            // Handle the error, show an error toast, or perform other actions
+        }
+    };
+
 
     const handleFilterChange = (e) => {
         setFilterOption(e.target.value);
@@ -54,10 +75,15 @@ const ApproveQuestionnaire = () => {
                 boxShadow="lg"
                 bg="white"
             >
+                <Flex alignItems='center' justifyContent={'space-between'}>
                 <Text fontSize="xl" fontWeight="bold" mb={2}>
                     {questionnaire.userName}
                 </Text>
-                <Divider />
+                <Button colorScheme='teal' onClick={()=> approveOnm(questionnaire._id)}>
+                    Approve
+                </Button>
+                </Flex>
+                <Divider mt={2} mb={2}/>
                 <Text fontSize="xl" fontWeight="bold" mb={2}>
                     {questionnaire.questionnaireName}
                 </Text>
@@ -82,8 +108,9 @@ const ApproveQuestionnaire = () => {
                       </>
                         ))}
                     </Text>
-
-                <VStack align="start" spacing={4}>
+                    <Divider/>
+                <VStack mt={2} align="start" spacing={4}>
+                    <Heading size={'md'}>Questions : </Heading>
                     {questionnaire.questions.map((question) => (
                         <Box key={question._id} w="100%">
                             {question.answerType === 'text' && (
