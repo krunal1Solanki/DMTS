@@ -2,6 +2,14 @@ const { mongoose } = require('mongoose')
 const Schema = mongoose.Schema
 //const ED = rootRequire('utils/encry_decry')
 const schema = new Schema({
+    type : {
+        type : String,
+        enum : ['question', 'answer'],
+        default : 'question'
+    },
+    userId : mongoose.Types.ObjectId,
+    userName : String,
+    isApproved : Boolean,
     formType: {
         type: String,
          required: true,
@@ -25,6 +33,7 @@ const schema = new Schema({
                 enum: ['rating', 'yesno', 'text'],
                 required: true,
             },
+            answer : String
         }
     ],
     // Fields for imageModel
@@ -34,6 +43,7 @@ const schema = new Schema({
                 type: String,
                 required: true,
             },
+            answer : String
         }
     ],
 }, {

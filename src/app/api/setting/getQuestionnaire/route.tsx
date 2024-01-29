@@ -5,7 +5,7 @@ connect()
 export async function GET (request : NextRequest) {
     try {
         // Save the document to the database
-        const info = await questionnaireModel.find();
+        const info = await questionnaireModel.find({type : "question"});
         return NextResponse.json({
             message :  info
         })
