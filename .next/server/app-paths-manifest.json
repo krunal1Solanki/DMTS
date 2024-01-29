@@ -1,4 +1,3 @@
 {
-  "/settings/page": "app/settings/page.js",
-  "/api/setting/getQuestionnaire/route": "app/api/setting/getQuestionnaire/route.js"
+  "/settings/page": "app/settings/page.js"
 }

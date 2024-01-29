@@ -55,7 +55,11 @@ const ApproveQuestionnaire = () => {
     };
 
     const renderCard = (questionnaire) => {
-        const isApproved = questionnaire.isApproved || filterOption === 'all';
+        console.log(
+            "PPPPPPPP", questionnaire.isApproved
+        )
+        let isApproved = questionnaire.isApproved || filterOption === 'all';
+        if(filterOption == 'pending' && questionnaire.isApproved) isApproved = false
 
         if (
             (!isApproved) ||
@@ -79,9 +83,13 @@ const ApproveQuestionnaire = () => {
                 <Text fontSize="xl" fontWeight="bold" mb={2}>
                     {questionnaire.userName}
                 </Text>
-                <Button colorScheme='teal' onClick={()=> approveOnm(questionnaire._id)}>
-                    Approve
-                </Button>
+                {isApproved ? (
+                    <CheckIcon color="green.500" boxSize={6} />
+                ) : (
+                    <Button colorScheme="teal" onClick={() => approveOnm(questionnaire._id)}>
+                        Approve
+                    </Button>
+                )}
                 </Flex>
                 <Divider mt={2} mb={2}/>
                 <Text fontSize="xl" fontWeight="bold" mb={2}>
@@ -161,6 +169,7 @@ const ApproveQuestionnaire = () => {
                 >
                     <option value="all">All</option>
                     <option value="approved">Show only approved</option>
+                    <option value="pending">Show only pending</option>
                 </Select>
 
                 <InputGroup>
