@@ -1,6 +1,7 @@
 {
   "/settings/page": "app/settings/page.js",
-  "/users/page": "app/users/page.js",
   "/page": "app/page.js",
-  "/login/page": "app/login/page.js"
+  "/users/page": "app/users/page.js",
+  "/api/setting/getAnsweredQuestionnaire/route": "app/api/setting/getAnsweredQuestionnaire/route.js",
+  "/api/setting/getQuestionnaire/route": "app/api/setting/getQuestionnaire/route.js"
 }

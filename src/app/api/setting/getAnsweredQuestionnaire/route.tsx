@@ -27,6 +27,7 @@ export async function GET(request: NextRequest) {
     const decodedInfo = [];
 
     for (const questionnaire of info) {
+        console.log(questionnaire.images)
       const decodedImages = await decodeImagesToBase64(questionnaire.images);
       decodedInfo.push({
         ...questionnaire,

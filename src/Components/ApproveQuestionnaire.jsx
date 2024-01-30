@@ -83,7 +83,7 @@ const ApproveQuestionnaire = () => {
                 <Text fontSize="xl" fontWeight="bold" mb={2}>
                     {questionnaire.userName}
                 </Text>
-                {isApproved ? (
+                {questionnaire.isApproved ? (
                     <CheckIcon color="green.500" boxSize={6} />
                 ) : (
                     <Button colorScheme="teal" onClick={() => approveOnm(questionnaire._id)}>

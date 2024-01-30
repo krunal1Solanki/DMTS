@@ -143,14 +143,15 @@ const AddQuestionnaire = () => {
                         <Box key={index} borderWidth="1px" w="100%" p={4} borderRadius="lg">
                             <FormControl mb={2}>
                                 <FormLabel>Answer Type:</FormLabel>
-                                <Input
-                                    type="text"
+                                <Select
                                     required
                                     value={question.answerType}
-                                    onChange={(e) =>
-                                        handleQuestionChange(index, 'answerType', e.target.value)
-                                    }
-                                />
+                                    onChange={(e) => handleQuestionChange(index, 'answerType', e.target.value)}
+                                >
+                                    <option value="rating">Rating</option>
+                                    <option value="yesno">Yes/No</option>
+                                    <option value="text">Text</option>
+                                </Select>
                             </FormControl>
                             <FormLabel>Question Text:</FormLabel>
                             <Input
