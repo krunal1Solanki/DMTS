@@ -22,7 +22,7 @@ export async function POST(request: NextRequest) {
                 const relativePath = join('images', `${timestamp}_${file.name}`);
                 const absolutePath = join(process.cwd(), 'public', relativePath);
                 await writeFile(absolutePath, buffer);
-                images[i].imageName = absolutePath;
+                images[i].answer = absolutePath;
             }
         }
 
