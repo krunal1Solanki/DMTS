@@ -43,6 +43,8 @@ const schema = new Schema({
                 type: String,
                 required: true,
             },
+            latitude : String,
+            longitude : String,
             answer : String
         }
     ],

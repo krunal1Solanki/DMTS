@@ -10,7 +10,7 @@ const ApproveQuestionnaire = () => {
     const [questionnaires, setQuestionnaires] = useState([]);
     const [filterOption, setFilterOption] = useState('all'); // 'all' is the default value
     const [userNameSearch, setUserNameSearch] = useState('');
-
+    const [formTypeFilter, setFormTypeFilter] = useState('all');
     useEffect(() => {
         getQuestionnaires();
     }, []);
@@ -53,18 +53,18 @@ const ApproveQuestionnaire = () => {
     const handleUserNameSearch = (e) => {
         setUserNameSearch(e.target.value);
     };
+    const handleFormTypeFilterChange = (e) => {
+        setFormTypeFilter(e.target.value);
+    };
+
 
     const renderCard = (questionnaire) => {
-        console.log(
-            "PPPPPPPP", questionnaire.isApproved
-        )
-        let isApproved = questionnaire.isApproved || filterOption === 'all';
-        if(filterOption == 'pending' && questionnaire.isApproved) isApproved = false
+        const isApproved = questionnaire.isApproved || filterOption === 'all';
+        const isMatchingFormType = questionnaire.formType === formTypeFilter || formTypeFilter === 'all';
+        console.log(questionnaire.formType, formTypeFilter)
 
-        if (
-            (!isApproved) ||
-            (userNameSearch && !questionnaire.userName.toLowerCase().includes(userNameSearch.toLowerCase()))
-        ) {
+        if ((!isApproved) || (!isMatchingFormType) ||
+            (userNameSearch && !questionnaire.userName.toLowerCase().includes(userNameSearch.toLowerCase()))) {
             return null;
         }
 
@@ -163,13 +163,16 @@ const ApproveQuestionnaire = () => {
             </Text>
 
             <HStack mb={4} spacing={4} align="center">
-                <Select
-                    value={filterOption}
-                    onChange={handleFilterChange}
-                >
+                <Select value={filterOption} onChange={handleFilterChange}>
                     <option value="all">All</option>
                     <option value="approved">Show only approved</option>
                     <option value="pending">Show only pending</option>
+                </Select>
+
+                <Select value={formTypeFilter} onChange={handleFormTypeFilterChange}>
+                    <option value="all">All Forms</option>
+                    <option value="ONM">ONM</option>
+                    <option value="Survey">Survey</option>
                 </Select>
 
                 <InputGroup>
