@@ -136,7 +136,6 @@ const AddQuestionnaire = () => {
             </VStack>
 
             <Flex justify="space-between">
-                {/* Questions */}
                 <VStack spacing={4} w="48%">
                     <Heading size="md">Questions</Heading>
                     {questionnaire.questions.map((question, index) => (
