@@ -1,0 +1,28 @@
+{
+	"version": "2.0.0",
+	"tasks": [
+		{
+			"type": "typescript",
+			"tsconfig": "tsconfig.json",
+			"option": "watch",
+			"problemMatcher": [
+				"$tsc-watch"
+			],
+			"group": "build",
+			"label": "tsc: watch - tsconfig.json"
+		},
+		{
+			"label": "gitPipeline",
+			"type": "shell",
+			"command": "bash",
+			"args": [
+			  "-c",
+			  "git add . && git commit -m 'commit' && git push"
+			],
+			"group": {
+			  "kind": "build",
+			  "isDefault": true
+			}
+		  }
+	]
+}
