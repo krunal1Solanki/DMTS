@@ -17,6 +17,8 @@ export async function POST(request: NextRequest) {
         const queryDescription = body.get("queryDescription");
         const selectedPriority = body.get("selectedPriority");
         //@ts-ignore
+        const siteDetails = JSON.parse(body.get("siteDetails"));
+        //@ts-ignore
         const responsibleUser = JSON.parse(body.get("responsibleUser"));
 
         const timestamp = Date.now();
@@ -36,7 +38,7 @@ export async function POST(request: NextRequest) {
         await writeFile(absolutePath, buffer);
 
         await queryModel.create({
-            selectedSite, selectedUser, querySubject, queryDescription, selectedPriority, attachments: absolutePath,responsibleUser
+            selectedSite, selectedUser, querySubject, queryDescription, selectedPriority, attachments: absolutePath,responsibleUser, siteDetails
         });
 
         console.log(body);

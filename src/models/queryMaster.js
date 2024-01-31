@@ -1,3 +1,5 @@
+import { any } from "zod";
+
 const { mongoose } = require('mongoose');
 const Schema = mongoose.Schema;
 
@@ -7,6 +9,8 @@ const schema = new Schema(
       type: String,
       required: true,
     },
+    remarks : String,
+    closingDate : Date,
     selectedUser: {
       type: String,
       required: true,
@@ -25,6 +29,7 @@ const schema = new Schema(
       enum: ['low', 'medium', 'high'],
       required: true,
     },
+    siteDetails : Object,
     attachments: {
       type: String, // Assuming you store file paths or URLs
     },

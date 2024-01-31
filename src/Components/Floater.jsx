@@ -2,7 +2,7 @@
 import React, { useEffect, useState } from 'react';
 import { FloatButton } from 'antd';
 import { CustomerServiceOutlined, LogoutOutlined, QuestionCircleOutlined } from '@ant-design/icons';
-import { Box, useToast, Input, Button, Modal, ModalOverlay, ModalContent, ModalHeader, ModalBody, ModalCloseButton, VStack, Select, Textarea, FormControl, FormLabel, FormHelperText, IconButton, Stack, Text } from '@chakra-ui/react';
+import { Box, useToast, Input, Button,Grid, Modal, ModalOverlay, ModalContent, ModalHeader, ModalBody, ModalCloseButton, VStack, Select, Textarea, FormControl, FormLabel, FormHelperText, IconButton, Stack, Text } from '@chakra-ui/react';
 import { FaFile, FaPaperPlane } from 'react-icons/fa';
 import { QuestionIcon, CheckCircleIcon, WarningIcon } from '@chakra-ui/icons';
 import axios from 'axios';
@@ -43,6 +43,21 @@ const Floater = () => {
     }
   }, [sites]);
 
+  useEffect(()=> {
+    setDetailsFun();
+  }, [selectedSite])
+
+  const setDetailsFun = () => {
+    console.log(sites, selectedSite)
+    let found = false;
+    for(let i = 0; i < sites.length; i ++) {
+      if(sites[i].pumpName == selectedSite) {
+        setSiteDetails(sites[i])
+        found = true;
+      }
+    }
+    if(!found) setSiteDetails('')
+  }
   useEffect(() => {
     // Update userOptions when 'users' change
     if(users && users.length > 0) {
@@ -73,6 +88,8 @@ const Floater = () => {
       formData.append('querySubject', querySubject);
       formData.append('queryDescription', queryDescription);
       formData.append('selectedPriority', selectedPriority);
+      formData.append('siteDetails', JSON.stringify(siteDetails.address))
+      console.log("SITEEEEEEEEEE",JSON.stringify(siteDetails.address))
       formData.append('attachments', attachments)
       const userCurr = {name : authReducer.value.user.OperatorName, _id : authReducer.value.user._id};
       formData.append('responsibleUser', JSON.stringify(userCurr))
@@ -161,15 +178,32 @@ const Floater = () => {
                     </option>
                   ))}
                 </Select>
-              </FormControl>
-              {siteDetails && (
-                  <>
-                    <Text>Block: {siteDetails.address.block}</Text>
-                    <Text>District: {siteDetails.address.district}</Text>
-                    <Text>Panchayat: {siteDetails.address.panchayat}</Text>
-                    <Text>State: {siteDetails.address.state}</Text>
-                    <Text>Village: {siteDetails.address.village}</Text>
-                  </>
+                </FormControl>
+              {siteDetails && typeof siteDetails != "string" && (
+                  <Box>
+                  <Grid templateColumns="repeat(2, 1fr)" gap={2}>
+                    <FormControl>
+                      <FormLabel>Block</FormLabel>
+                      <Input isReadOnly value={siteDetails.address.block || "Not Added"} />
+                    </FormControl>
+                    <FormControl>
+                      <FormLabel>District</FormLabel>
+                      <Input isReadOnly value={siteDetails.address.district || "Not Added"} />
+                    </FormControl>
+                    <FormControl>
+                      <FormLabel>Panchayat</FormLabel>
+                      <Input isReadOnly value={siteDetails.address.panchayat || "Not Added"} />
+                    </FormControl>
+                    <FormControl>
+                      <FormLabel>State</FormLabel>
+                      <Input isReadOnly value={siteDetails.address.state || "Not Added"} />
+                    </FormControl>
+                    <FormControl>
+                      <FormLabel>Village</FormLabel>
+                      <Input isReadOnly value={siteDetails.address.village || "Not Added"} />
+                    </FormControl>
+                  </Grid>
+                </Box>
                 )}
               <FormControl>
                 <FormLabel>Assign To</FormLabel>
