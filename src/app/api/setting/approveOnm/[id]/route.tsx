@@ -3,6 +3,7 @@ import questionnaireMaster from '@/models/questionnaireMaster'
 import { NextRequest, NextResponse } from "next/server"
 
 connect()
+export const dynamic = 'force-dynamic'
 export async function GET(request: NextRequest, params: any) {
     try {
         {console.log("INnn")}

@@ -3,6 +3,8 @@ import {connect} from "../../../../dbConfig/dbConfig.js"
 import {NextRequest, NextResponse} from "next/server"
 
 connect()
+
+export const dynamic = 'force-dynamic';
 export async function GET (request : NextRequest) {
     try {
         const sites = await siteMaster.find({isDMTSActive : true});

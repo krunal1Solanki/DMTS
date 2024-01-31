@@ -1,12 +1,4 @@
 {
-  "/api/user/logout/route": "app/api/user/logout/route.js",
   "/login/page": "app/login/page.js",
-  "/favicon.ico/route": "app/favicon.ico/route.js",
-  "/api/user/login/route": "app/api/user/login/route.js",
-  "/page": "app/page.js",
-  "/api/sites/getActiveSites/route": "app/api/sites/getActiveSites/route.js",
-  "/api/user/getUserWithGroups/route": "app/api/user/getUserWithGroups/route.js",
-  "/api/project/getAllProjects/route": "app/api/project/getAllProjects/route.js",
-  "/api/sites/getSitesByProjectId/route": "app/api/sites/getSitesByProjectId/route.js",
-  "/api/setting/raiseQuery/route": "app/api/setting/raiseQuery/route.js"
+  "/page": "app/page.js"
 }

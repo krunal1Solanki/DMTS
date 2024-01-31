@@ -3,6 +3,8 @@ import {NextRequest, NextResponse} from "next/server"
 import userSiteHistoryModel from "@/models/userSiteHistoryModel.js"
 
 connect()
+
+export const dynamic = 'force-dynamic';
 export async function GET (request : NextRequest) {
     try {
         const info = await userSiteHistoryModel.find().sort({creationDate : -1});

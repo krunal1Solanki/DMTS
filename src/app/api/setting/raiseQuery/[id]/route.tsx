@@ -5,6 +5,7 @@ import { join } from 'path'
 import { readFile, writeFile } from "fs/promises";
 
 connect()
+export const dynamic = 'force-dynamic';
 export async function GET(request: NextRequest, params: any) {
     try {
         const queryId = params.params.id

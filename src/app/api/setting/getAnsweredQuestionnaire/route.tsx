@@ -6,7 +6,6 @@ import { readFile } from 'fs/promises';
 import questionnaireModel from '../../../../models/questionnaireMaster';
 
 connect();
-
 async function decodeImagesToBase64(images : any) {
   const decodedImages = [];
   for (const image of images) {
@@ -18,7 +17,7 @@ async function decodeImagesToBase64(images : any) {
   }
   return decodedImages;
 }
-
+export const dynamic = 'force-dynamic'
 export async function GET(request: NextRequest) {
   try {
     // Save the document to the database

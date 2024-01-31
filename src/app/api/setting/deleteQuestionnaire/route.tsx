@@ -4,7 +4,7 @@ import questionnaireModel from '../../../../models/questionnaireMaster';
 
 connect();
 
-
+export const dynamic = 'force-dynamic'
 export async function DELETE(request: NextRequest) {
     try {
       // Extract the questionnaireId from the request body

@@ -3,7 +3,7 @@ import { NextRequest, NextResponse } from "next/server";
 import officeModel from '../../../../models/officeModel';
 
 connect();
-
+export const dynamic = 'force-dynamic'
 export async function POST(request: NextRequest) {
     try {
         // Parse the JSON body from the request

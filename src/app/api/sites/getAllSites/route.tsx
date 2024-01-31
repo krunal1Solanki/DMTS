@@ -4,6 +4,8 @@ import siteMaster from "@/models/siteMaster.js"
 import officeModel from "@/models/officeModel.js";
 
 connect()
+
+export const dynamic = 'force-dynamic';
 export async function GET (request : NextRequest) {
     try {
         let info = await siteMaster.find();

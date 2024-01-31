@@ -5,6 +5,8 @@ import { readFile, writeFile } from "fs/promises";
 import  queryModel from '../../../../models/queryMaster'
 
 connect()
+
+export const dynamic = 'force-dynamic'
 export async function GET (request : NextRequest) {
     try {
         // Save the document to the database

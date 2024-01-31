@@ -3,6 +3,8 @@ import groupModel from '@/models/siteGroupMode'
 import { NextRequest, NextResponse } from "next/server"
 
 connect()
+
+export const dynamic = 'force-dynamic';
 export async function GET(request: NextRequest, params: any) {
     try {
         const queryId = params.params.groupId;
