@@ -7,9 +7,11 @@ export async function POST (request : NextRequest) {
     try {
         const body = await request.json();
         console.log(body)
-        const {queryStatus, _id} = body;
-        const c = await queryModel.findOneAndUpdate({_id}, {$set : {queryStatus}});
-        console.log(c)
+        const {queryStatus, _id, remarks} = body;
+        if(remarks)
+            await queryModel.findOneAndUpdate({_id}, {$set : {queryStatus, remarks}});
+        else 
+            await queryModel.findOneAndUpdate({_id}, {$set : {queryStatus}});
         return NextResponse.json({
             message : "Query Raised Successfully"
         })

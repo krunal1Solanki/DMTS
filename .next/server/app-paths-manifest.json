@@ -1,4 +1,11 @@
 {
   "/login/page": "app/login/page.js",
-  "/page": "app/page.js"
+  "/page": "app/page.js",
+  "/settings/page": "app/settings/page.js",
+  "/users/page": "app/users/page.js",
+  "/api/setting/sumbitQuestionnaire/route": "app/api/setting/sumbitQuestionnaire/route.js",
+  "/api/sites/getAllSites/route": "app/api/sites/getAllSites/route.js",
+  "/api/setting/getQuery/route": "app/api/setting/getQuery/route.js",
+  "/api/setting/getQuestionnaire/route": "app/api/setting/getQuestionnaire/route.js",
+  "/api/setting/getAnsweredQuestionnaire/route": "app/api/setting/getAnsweredQuestionnaire/route.js"
 }

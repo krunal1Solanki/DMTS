@@ -23,7 +23,8 @@ import {
 } from '@chakra-ui/react';
 
 import { BsEye, BsDownload, BsX } from 'react-icons/bs';
-import { Modal, ModalOverlay, ModalContent, ModalHeader, ModalBody, ModalCloseButton } from '@chakra-ui/react';
+import { Modal, ModalOverlay, ModalContent, ModalHeader, ModalBody, ModalCloseButton, Textarea } from '@chakra-ui/react';
+
 
 const getStatusBadge = (status) => {
   switch (status) {
@@ -42,10 +43,13 @@ const QueryDisplay = () => {
   const [filteredQueries, setFilteredQueries] = useState([]);
   const [filterStatus, setFilterStatus] = useState('all');
   const [unsavedChanges, setUnsavedChanges] = useState(false);
+  const [id, setId] = useState('');
   const [loader, setLoader] = useState(false);
   const [expandedQuery, setExpandedQuery] = useState(null); // New state for expanded query
   const [isModalOpen, setIsModalOpen] = useState(false); // State to control modal visibility
   const toast = useToast();
+  const [remarks, setRemarks] = useState('');
+  const [isRemarksModalOpen, setIsRemarksModalOpen] = useState(false);
 
   useEffect(() => {
     getAllQueries();
@@ -92,11 +96,26 @@ const QueryDisplay = () => {
   };
 
   const handleQueryStatusSubmit = async (id, newStatus) => {
+    setId(id);
+  
+  if (newStatus === 'resolved' && remarks.length == 0) {
+    // Open modal for entering remarks
+    setIsRemarksModalOpen(true);
+  } else {
     try {
-      await axios.post('/api/setting/updateQueryStatus', {
-        _id: id,
-        queryStatus: newStatus,
-      });
+
+      if(remarks.length > 0) {
+        await axios.post('/api/setting/updateQueryStatus', {
+          _id: id,
+          queryStatus: newStatus,
+          remarks
+        });
+      } else {
+        await axios.post('/api/setting/updateQueryStatus', {
+          _id: id,
+          queryStatus: newStatus,
+        });
+      }
 
       toast({
         title: 'Submit Successful',
@@ -122,8 +141,31 @@ const QueryDisplay = () => {
         duration: 3000,
         isClosable: true,
       });
+    } finally {
+      setRemarks('');
+      closeRemarksModal()
     }
-  };
+  }
+};
+
+const closeRemarksModal = () => {
+  setIsRemarksModalOpen(false);
+};
+
+// Function to handle submission of remarks
+const submitRemarks = async () => {
+  try {
+    // Add logic to handle remarks submission, e.g., sending to the server
+    console.log('Remarks submitted:', remarks);
+
+    // Close the remarks modal
+    closeRemarksModal();
+  } catch (error) {
+    console.error('Error submitting remarks:', error);
+    // Handle error, show toast, etc.
+  }
+};
+
 
   const handleFilterChange = (e) => {
     setFilterStatus(e.target.value);
@@ -264,6 +306,28 @@ const QueryDisplay = () => {
             </Flex>
           </ModalContent>
         </Modal>
+        <Modal isOpen={isRemarksModalOpen} onClose={closeRemarksModal}>
+  <ModalOverlay />
+  <ModalContent>
+    <ModalHeader>{`Please enter remarks !`}</ModalHeader>
+    <ModalCloseButton />
+    <ModalBody>
+      {/* Textarea for entering remarks */}
+      <Textarea value={remarks} onChange={(e) => setRemarks(e.target.value)} />
+    </ModalBody>
+    {/* Action buttons in the modal */}
+    <Flex justifyContent="flex-end" p={4}>
+      <Button colorScheme="teal" isDisabled={remarks.length == 0} onClick={()=> {
+        handleQueryStatusSubmit(id, "resolved")
+      }}>
+        Submit Remarks
+      </Button>
+      <Button ml={2} onClick={closeRemarksModal}>
+        Cancel
+      </Button>
+    </Flex>
+  </ModalContent>
+</Modal>
       </CardBody>
     </Card>
   );
