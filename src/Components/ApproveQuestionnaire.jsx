@@ -28,6 +28,8 @@ const ApproveQuestionnaire = () => {
     const approveOnm = async (id) => {
         try {
             const response = await axios.get(`/api/setting/approveOnm/${id}`);
+
+            await getQuestionnaires();
             // Handle the response if needed
             console.log('Approval response:', response.data);
 

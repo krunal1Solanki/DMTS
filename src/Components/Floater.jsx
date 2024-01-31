@@ -25,6 +25,7 @@ const Floater = () => {
   const [sites, setSites] = useState(siteReducer.value.sites || []);
   const [siteOptions, setSiteOptions] = useState([]);
   const [userOptions, setUserOptions] = useState([]);
+  const [siteDetails, setSiteDetails] = useState(null);
 
   useEffect(() => {
     setUsers(userReducer.value.users);
@@ -37,6 +38,7 @@ const Floater = () => {
   useEffect(() => {
     if(sites && sites.length > 0) {
       const updatedSiteOptions = sites.map((site) => site.pumpName) || [];
+      console.log("SITES",{sites})
       setSiteOptions(updatedSiteOptions);
     }
   }, [sites]);
@@ -160,6 +162,15 @@ const Floater = () => {
                   ))}
                 </Select>
               </FormControl>
+              {siteDetails && (
+                  <>
+                    <Text>Block: {siteDetails.address.block}</Text>
+                    <Text>District: {siteDetails.address.district}</Text>
+                    <Text>Panchayat: {siteDetails.address.panchayat}</Text>
+                    <Text>State: {siteDetails.address.state}</Text>
+                    <Text>Village: {siteDetails.address.village}</Text>
+                  </>
+                )}
               <FormControl>
                 <FormLabel>Assign To</FormLabel>
                 <Select
