@@ -3,6 +3,7 @@ import { connect } from "../../../../dbConfig/dbConfig";
 import { NextRequest, NextResponse } from "next/server";
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
+import checkingStatusModel from "@/models/checkingStatusModel";
 
 connect();
 
@@ -15,6 +16,7 @@ export async function POST(request: NextRequest,) {
         const user = await userModel.findOne({"pmscUserData.employeeId" : OperatorName });
         console.log({ user });
 
+        const info = await checkingStatusModel.find({userId : user._id}).sort({creationDate : -1}).limit(1);
 
         if(imeiNumber) {
             const imei = user.imeiPMSC;
@@ -49,7 +51,8 @@ export async function POST(request: NextRequest,) {
 
         const response = NextResponse.json({
             message: "User found!",
-            user
+            user,
+            info
         });
         
         response.cookies.set("token", token, {httpOnly : true});
